@@ -1,0 +1,31 @@
+categoria,pregunta,a,b,c,d,respuesta
+Historia,¿Quién fue el primer presidente de Argentina?,Rivadavia,San Martín,Belgrano,Sarmiento,a
+Historia,¿En qué año comenzó la Revolución Francesa?,1789,1776,1804,1799,a
+Historia,¿Qué civilización construyó las pirámides?,Romana, Egipcia, Griega, Maya,b
+Historia,¿Quién fue Napoleón Bonaparte?,Un filósofo,Un emperador francés,Un rey inglés,Un científico,b
+Historia,¿Qué país inició la Segunda Guerra Mundial?,Italia,Japón,Alemania,Rusia,c
+Ciencia,¿Cuál es la fórmula del agua?,H2O,CO2,NaCl,O2,a
+Ciencia,¿Qué planeta es el más cercano al Sol?,Venus,Marte,Mercurio,Tierra,c
+Ciencia,¿Qué gas respiramos principalmente?,Oxígeno,Nitrógeno,Dióxido de carbono,Hidrógeno,b
+Ciencia,¿Cuántos huesos tiene el cuerpo humano adulto?,206,208,210,215,a
+Ciencia,¿Qué científico desarrolló la teoría de la relatividad?,Einstein,Newton,Galileo,Tesla,a
+Geografía,¿Cuál es la capital de Japón?,Kioto,Osaka,Tokio,Hiroshima,c
+Geografía,¿Dónde queda el monte Everest?,India,Nepal,China,Tíbet,b
+Geografía,¿Cuál es el río más largo del mundo?,Amazonas,Nilo,Yangtsé,Misisipi,a
+Geografía,¿Qué país tiene forma de bota?,Grecia,España,Italia,Portugal,c
+Geografía,¿En qué continente está Egipto?,Asia,Europa,África,Oceanía,c
+Arte,¿Quién pintó la Mona Lisa?,Picasso,Van Gogh,Da Vinci,Dalí,c
+Arte,¿Qué instrumento usaba Beethoven?,Violín,Flauta,Piano,Guitarra,c
+Arte,¿Cuál es un estilo artístico?,Realismo,Física,Geografía,Matemática,a
+Arte,¿Qué escultor hizo 'El David'?,Donatello,Da Vinci,Miguel Ángel,Raphael,c
+Arte,¿Qué movimiento es Dalí?,Cubismo,Surrealismo,Impresionismo,Barroco,b
+Deportes,¿En qué deporte se usa una raqueta?,Fútbol,Tenis,Boxeo,Hockey,b
+Deportes,¿Cuántos jugadores tiene un equipo de fútbol?,9,10,11,12,c
+Deportes,¿Dónde se juegan los Juegos Olímpicos?,Un solo país,Cada continente,Cada 4 años en diferentes países,Siempre en Grecia,c
+Deportes,¿Qué deporte practica Lionel Messi?,Tenis,Fútbol,Básquet,Golf,b
+Deportes,¿Cuál es un deporte de invierno?,Snowboard,Fútbol,Ciclismo,Atletismo,a
+Entretenimiento,¿Quién protagoniza 'Iron Man'?,Chris Evans,Robert Downey Jr.,Mark Ruffalo,Tom Holland,b
+Entretenimiento,¿Cuál es la casa de Harry Potter?,Ravenclaw,Slytherin,Hufflepuff,Gryffindor,d
+Entretenimiento,¿Qué serie es conocida por los dragones?,Breaking Bad,Friends,Game of Thrones,Stranger Things,c
+Entretenimiento,¿Quién canta 'Shape of You'?,Ed Sheeran,Justin Bieber,Shawn Mendes,Bruno Mars,a
+Entretenimiento,¿Qué superhéroe es conocido como el 'Caballero de la Noche'?,Superman,Iron Man,Batman,Spider-Man,c
