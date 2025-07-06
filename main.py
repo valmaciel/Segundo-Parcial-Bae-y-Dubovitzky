@@ -1,55 +1,43 @@
 import random
-from especificas import *
+from especificas_simples import *
+from especificas_complejas import *
 from input import *
 from parser import *
+from usuarios import *
+import os
 
 def main():
-    print('\n¡Bienvenidos a Preguntados!\n')
+    while True:
+        os.system('cls')
+        print("¡Bienvenido a Preguntados!\n")
+        print("""Menú principal:
 
-    preguntas_por_categoria = parser_csv()
+1. Ingresar usuario
+2. Registrar usuario
+3. Configuración y ajustes de accesibilidad
+4. Salir
+""")
 
-    categorias = ['Historia', 'Ciencia', 'Geografía', 'Arte', 'Deportes', 'Entretenimiento', 'Corona']
+        ingreso_usuario = manejar_menu("1234")
 
-    categorias_por_letra = {'a': 'Historia',
-                            'b': 'Ciencia',
-                            'c': 'Geografía',
-                            'd': 'Arte',
-                            'e': 'Deportes',
-                            'f': 'Entretenimiento'}
-    
-    jugador1 = {"nombre": "Denis",
-                "puntos": 0,
-                "puntos_corona": 0,
-                "categorias_restantes": ['Historia', 'Ciencia', 'Geografía', 'Arte', 'Deportes', 'Entretenimiento']}
-    
-    jugador2 = {"nombre": "Valentina",
-                "puntos": 0,
-                "puntos_corona": 0,
-                "categorias_restantes": ['Historia', 'Ciencia', 'Geografía', 'Arte', 'Deportes', 'Entretenimiento']}
-    
-    turno_jugador = True
-    en_juego = True
-    
-    while en_juego:
-        while turno_jugador:
-            if jugador1['puntos'] >= 6 or jugador2['puntos'] >= 6:
-                en_juego = False
-            turno_jugador = jugar_turno(jugador1, categorias, preguntas_por_categoria, categorias_por_letra)
-            turno_jugador = False
-        while not turno_jugador:
-            if jugador1['puntos'] >= 6 or jugador2['puntos'] >= 6:
-                en_juego = False
-            turno_jugador = jugar_turno(jugador2, categorias, preguntas_por_categoria, categorias_por_letra)
-            turno_jugador = True
-    
-    if jugador1['puntos'] > jugador2['puntos']:
-        print(f'🎉 Ganador: {jugador1["nombre"]}')
-    elif jugador2['puntos'] > jugador1['puntos']:
-        print(f'🎉 Ganador: {jugador2["nombre"]}')
-    else:
-        print('Empate!')
+        match ingreso_usuario:
+            case 1:
+                os.system("cls")
+                archivo = parser_json()
+                lista_usuarios = archivo['jugadores']
+                usuario_ingresado, password_ingresado = loguear_usuario(lista_usuarios)
+                ingreso_a_menu_principal(usuario_ingresado, password_ingresado)
+            case 2:
+                os.system("cls")
+                registrar_usuario()
+            case 3:
+                pass
+            case 4:
+                os.system("cls")
+                break
+            case x:
+                print("ERROR")
 
-    print("\n🎉 Fin del juego. Gracias por jugar Preguntados!")
 
 if __name__ == "__main__":
     main()
