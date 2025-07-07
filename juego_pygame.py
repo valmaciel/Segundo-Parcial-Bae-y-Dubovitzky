@@ -24,11 +24,10 @@ icono = pygame.image.load("imagenes/corazoncito.png")
 pygame.display.set_icon(icono)
 
 # Colores
-rosita = (250, 223, 255)           # fondo
-blanco = (255, 255, 255)      # caja_color
-lila_suave = (236, 155, 215)      # caja_borde
-violeta_profundo = (115, 55, 130)      # texto color
-sombra = (230, 190, 240)
+
+modo_daltonico = False
+
+
 
 # Fuente
 fuente_grande = pygame.font.SysFont("Segoe UI", 50, bold=True)
@@ -66,18 +65,26 @@ julie = pygame.image.load("imagenes/julie.png")
 
 personajes = [jaden, bauti, hina, jess, julie]
 
-# lista usuarios guardados
-json_usuarios = "usuarios.json"
-def cargar_usuarios():
-    if os.path.exists(json_usuarios):
-        with open(json_usuarios, "r") as archivo:
-            return json.load(archivo)
-    else:
-        return {}
+def aplicar_modo_daltonico():
+    global rosita, blanco, lila_suave, violeta_profundo, sombra
 
-def guardar_usuarios(usuarios):
-    with open(json_usuarios, "w") as archivo:
-        json.dump(usuarios, archivo)
+    if modo_daltonico:
+        # Colores amigables para daltónicos (alto contraste)
+        rosita = (216, 227, 254)
+        blanco = (255, 255, 255)
+        lila_suave = (147, 168, 215)  # Azul intenso
+        violeta_profundo = (0, 68, 129)
+        sombra = (178, 197, 240)
+    else:
+        # Restaurar los colores originales
+        rosita = (250, 223, 255)
+        blanco = (255, 255, 255)
+        lila_suave = (236, 155, 215)
+        violeta_profundo = (115, 55, 130)
+        sombra = (230, 190, 240)
+
+aplicar_modo_daltonico()
+
 
 #1
 def pantalla_de_carga():
@@ -107,22 +114,22 @@ def pre_menu(personajes):
     boton_iniciar_sesion = pygame.Rect(300, 200, 400, 60)
     boton_registrarse = pygame.Rect(300, 300, 400, 60)
     boton_ajustes = pygame.Rect(300, 400, 400, 60)
+    boton_salir = pygame.Rect(300, 500, 400, 60)  # Nuevo botón
 
     pygame.display.update()
 
     running = True
     while running:
-        
         display.fill(rosita)
 
         titulo = fuente_grande.render("PyQuiz", True, violeta_profundo)
         display.blit(titulo, (425, 50))
 
-
         botones = [
             (boton_iniciar_sesion, "Iniciar Sesión"),
             (boton_registrarse, "Registrarse"),
-            (boton_ajustes, "Ajustes")
+            (boton_ajustes, "Ajustes"),
+            (boton_salir, "Salir del juego")  # Nuevo texto
         ]
 
         mouse_pos = pygame.mouse.get_pos()
@@ -134,13 +141,9 @@ def pre_menu(personajes):
             sombra_rect.y += 4
             rectangulo_redondeado(display, sombra, sombra_rect, radius=12)
 
-            # Detectar si el mouse está encima
-            if rect.collidepoint(mouse_pos):
-                color = lila_suave  # Hover
-            else:
-                color = blanco
+            # Hover
+            color = lila_suave if rect.collidepoint(mouse_pos) else blanco
 
-            # Botones
             rectangulo_redondeado(display, color, rect, radius=12)
             texto_render = fuente_texto_bold.render(texto, True, violeta_profundo)
             text_rect = texto_render.get_rect(center=rect.center)
@@ -159,6 +162,10 @@ def pre_menu(personajes):
 
                 elif boton_ajustes.collidepoint(evento.pos):
                     ajustes()
+
+                elif boton_salir.collidepoint(evento.pos):  # 🚪 salir
+                    pygame.quit()
+                    exit()
 
         pygame.display.update()
 
@@ -450,7 +457,8 @@ def inicio_sesion(personajes, generico = False, mensaje_inicio = "Iniciar Sesió
         # Texto clickeable debajo
         display.blit(texto_link, rect_link)
 
-        boton_volver = dibujar_boton_volver()
+        if not generico:
+            boton_volver = dibujar_boton_volver()
 
         pygame.display.update()
 
@@ -479,6 +487,8 @@ def ajustes():
         texto_efectos = fuente_texto_bold.render("Volumen efectos:", True, blanco)
         display.blit(texto_musica, (300, 150))
         display.blit(texto_efectos, (300, barra_musica.bottom + 10))
+        boton_daltonico = pygame.Rect(290, barra_efectos.bottom + 80, 450, 60)
+
 
         # Dibujar barra de música
         sombra_musica = barra_musica.copy()
@@ -513,14 +523,33 @@ def ajustes():
             texto2_rect = texto2.get_rect(center=rect_op2.center)
             display.blit(texto2, texto2_rect)
 
+            # Botón modo daltónico
+        sombra_dalt = boton_daltonico.copy()
+        sombra_dalt.x += 4; sombra_dalt.y += 4
+        rectangulo_redondeado(display, sombra, sombra_dalt, 12)
+        color_dalt = lila_suave if boton_daltonico.collidepoint(pygame.mouse.get_pos()) else blanco
+        rectangulo_redondeado(display, color_dalt, boton_daltonico, 12)
+
+        texto_dalt = fuente_texto_chica.render("Modo daltónico", True, violeta_profundo)
+        display.blit(texto_dalt, texto_dalt.get_rect(center=boton_daltonico.center))
+
+
         # Eventos
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
                 running = False
 
             elif evento.type == pygame.MOUSEBUTTONDOWN:
+                
                 if boton_volver.collidepoint(evento.pos):
                     return
+                
+                # Boton daltonico
+                if boton_daltonico.collidepoint(evento.pos):
+                    global modo_daltonico
+                    modo_daltonico = not modo_daltonico
+                    aplicar_modo_daltonico()
+
                 # Check en barra de música
                 for i in range(5):
                     rect_op = pygame.Rect(barra_musica.x + i * ancho_opcion, barra_musica.y, ancho_opcion, barra_musica.height)
@@ -535,6 +564,8 @@ def ajustes():
                     if rect_op2.collidepoint(evento.pos):
                         seleccion_efectos = i
                         volumen_efectos = opciones_volumen[i]
+                
+
 
         boton_volver = dibujar_boton_volver()
 
@@ -943,6 +974,8 @@ def tienda(nombre):
 def mostrar_pausa():
     boton_continuar = pygame.Rect(375, 300, 250, 60)
     boton_menu = pygame.Rect(375, 400, 250, 60)
+    boton_salir = pygame.Rect(375, 500, 250, 60)
+
 
     en_pausa = True
     while en_pausa:
@@ -971,6 +1004,15 @@ def mostrar_pausa():
         texto = fuente_texto_bold.render("Volver al menú", True, violeta_profundo)
         display.blit(texto, texto.get_rect(center=boton_menu.center))
 
+        # Botón salir al escritorio
+        sombra_rect = boton_salir.copy()
+        sombra_rect.x += 4; sombra_rect.y += 4
+        rectangulo_redondeado(display, sombra, sombra_rect, 12)
+        color = lila_suave if boton_salir.collidepoint(mouse_pos) else blanco
+        rectangulo_redondeado(display, color, boton_salir, 12)
+        texto = fuente_texto_bold.render("Salir al escritorio", True, violeta_profundo)
+        display.blit(texto, texto.get_rect(center=boton_salir.center))
+
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
                 pygame.quit()
@@ -981,6 +1023,9 @@ def mostrar_pausa():
                 elif boton_menu.collidepoint(evento.pos):
                     pre_menu(personajes)
                     return  # sale de pausa completamente
+                elif boton_salir.collidepoint(evento.pos):
+                    pygame.quit()
+                    exit()
 
         pygame.display.update()
 
@@ -989,8 +1034,9 @@ def pantalla_de_pregunta_6_opciones(nombre, contraseña):
     archivo = parser_json()
     lista_usuarios = archivo['jugadores']
     usuario_id = obtener_id_usuario(nombre, contraseña)
+    jugador = lista_usuarios[usuario_id]
     indice_aspecto = lista_usuarios[usuario_id]['aspecto']
-    texto_pregunta = "Elige una categoria"
+    texto_pregunta = f"Categorías restantes: {jugador['categorias_restantes']}"
 
     #posiciones
     centro_x = display.get_width() // 2
@@ -1035,7 +1081,7 @@ def pantalla_de_pregunta_6_opciones(nombre, contraseña):
 
         pregunta = fuente_texto_bold.render(texto_pregunta, True, violeta_profundo)
         display.blit(pregunta, (350, 30))
-        categoría = fuente_texto_bold.render("", True, violeta_profundo)
+        categoría = fuente_texto_bold.render("Elija una categoría", True, violeta_profundo)
         display.blit(categoría, (350, 80))
         display.blit(imagen, (20, 20))
 
@@ -1113,6 +1159,7 @@ def pantalla_de_pregunta_4_opciones(nombre, contraseña, personajes, categoria_e
     archivo = parser_json()
     lista_usuarios = archivo['jugadores']
     usuario_id = obtener_id_usuario(nombre, contraseña)
+    jugador = lista_usuarios[usuario_id]
     indice_aspecto = lista_usuarios[usuario_id]['aspecto']
     respuesta_a = lista_respuestas[0]
     respuesta_b = lista_respuestas[1]
@@ -1165,6 +1212,11 @@ def pantalla_de_pregunta_4_opciones(nombre, contraseña, personajes, categoria_e
         categoria = fuente_texto_bold.render(f"Categoría: {categoria_electa}", True, violeta_profundo)
         display.blit(categoria, (350, 80))
         display.blit(imagen, (20, 20))
+        texto_corona = fuente_texto_bold.render(f"Puntos corona: {jugador['puntos_corona']}", True, violeta_profundo)
+        display.blit(texto_corona, (350, 110))
+        texto_puntos = fuente_texto_bold.render(f"Puntos: {jugador['puntos']}", True, violeta_profundo)
+        display.blit(texto_puntos, (350, 140))
+
 
         sombra_pausa = boton_pausa.copy()
         sombra_pausa.x += 4; sombra_pausa.y += 4
@@ -1226,30 +1278,6 @@ def pantalla_de_pregunta_4_opciones(nombre, contraseña, personajes, categoria_e
 
         pygame.display.update()
 
-def jugar_pygame(jugador1_nombre, jugador1_contraseña, jugador2_nombre, jugador2_contraseña, personajes):
-    archivo = parser_json()
-    lista_usuario = archivo['jugadores']
-    
-    jugador1_id = obtener_id_usuario(jugador1_nombre, jugador1_contraseña)
-    jugador2_id = obtener_id_usuario(jugador2_nombre, jugador2_contraseña)
-    jugador1 = lista_usuario[jugador1_id]
-    jugador2 = lista_usuario[jugador2_id]
-
-    turno_jugador = True
-    en_juego = True
-    puntos_necesarios = 6
-
-    while en_juego:
-        if jugador1['puntos'] >= puntos_necesarios or jugador2['puntos'] >= puntos_necesarios:
-            en_juego = False
-            break
-
-        if turno_jugador:
-            turno_jugador = jugar_turno_pygame(jugador1_nombre, jugador1_contraseña, personajes)
-        else:
-            turno_jugador = jugar_turno_pygame(jugador2_nombre, jugador2_contraseña, personajes)
-            turno_jugador = not turno_jugador  # sigue rotando
-
 def jugar_ronda_normal(nombre, contraseña, categoria_para_ronda, personajes):
     terminado = False
     archivo = parser_json()
@@ -1259,6 +1287,10 @@ def jugar_ronda_normal(nombre, contraseña, categoria_para_ronda, personajes):
     jugador = lista_usuarios[jugador_id]
 
     while not terminado:
+        archivo = parser_json()
+        lista_usuarios = archivo['jugadores']
+        jugador_id = obtener_id_usuario(nombre, contraseña)
+        jugador = lista_usuarios[jugador_id]
         pregunta_numero = elegir_numero_de_pregunta_aleatorio(preguntas_dict, categoria_para_ronda)
         pregunta_de_ronda = preguntas_dict[categoria_para_ronda][pregunta_numero]
         respuesta = pantalla_de_pregunta_4_opciones(nombre, contraseña, personajes, categoria_para_ronda, pregunta_de_ronda['pregunta'], pregunta_de_ronda['opciones'])
@@ -1267,6 +1299,7 @@ def jugar_ronda_normal(nombre, contraseña, categoria_para_ronda, personajes):
             jugador['aciertos_totales'] += 1
             cargar_datos_json(archivo)
             print('Correcto')
+            break
         else:
             jugador['puntos_corona'] = 0
             jugador['errores_totales'] += 1
@@ -1274,7 +1307,6 @@ def jugar_ronda_normal(nombre, contraseña, categoria_para_ronda, personajes):
             cargar_datos_json(archivo)
             print('Incorrecto')
             break
-        break
     return terminado
 
 def jugar_ronda_corona(nombre, contraseña, personajes):    
@@ -1287,21 +1319,27 @@ def jugar_ronda_corona(nombre, contraseña, personajes):
 
     while not terminado:
         categoria_para_ronda = pantalla_de_pregunta_6_opciones(nombre, contraseña)
+        while categoria_para_ronda not in jugador['categorias_restantes']:
+            categoria_para_ronda = pantalla_de_pregunta_6_opciones(nombre, contraseña)
         pregunta_numero = elegir_numero_de_pregunta_aleatorio(preguntas_dict, categoria_para_ronda)
         pregunta_de_ronda = preguntas_dict[categoria_para_ronda][pregunta_numero]
         respuesta = pantalla_de_pregunta_4_opciones(nombre, contraseña, personajes, categoria_para_ronda, pregunta_de_ronda['pregunta'], pregunta_de_ronda['opciones'])
         if respuesta == pregunta_de_ronda['respuesta']:
             jugador['puntos'] += 1
+            if categoria_para_ronda in jugador['categorias_restantes']:
+                jugador['categorias_restantes'].remove(categoria_para_ronda) 
             jugador['puntos_corona'] = 0
             jugador['aciertos_totales'] += 1
             cargar_datos_json(archivo)
             print('Correcto')
+            break
         else:
             jugador['puntos_corona'] = 0
             jugador['errores_totales'] += 1
             terminado = True
             cargar_datos_json(archivo)
             print('Incorrecto')
+            break
     return terminado
     
 def jugar_turno_pygame(nombre, contraseña, personajes):
@@ -1311,21 +1349,173 @@ def jugar_turno_pygame(nombre, contraseña, personajes):
     jugador = lista_usuarios[jugador_id]
 
     categorias = ['Historia', 'Ciencia', 'Geografía', 'Arte', 'Deportes', 'Entretenimiento', 'Corona']
-    
-    categoria_para_ronda = obtener_categoria_aleatoria(categorias)
 
     terminado = False
 
     while not terminado:
+        categoria_para_ronda = obtener_categoria_aleatoria(categorias)
+        archivo = parser_json()
+        lista_usuarios = archivo['jugadores']
+        jugador = lista_usuarios[jugador_id]
         if jugador['puntos'] >= 6:
-            break
+            terminado = True
+            return terminado
         elif calcular_puntos_coronas(categoria_para_ronda, jugador['puntos_corona']):
             terminado = jugar_ronda_corona(nombre, contraseña, personajes)
+            if terminado:
+                break
         else:
             terminado = jugar_ronda_normal(nombre, contraseña, categoria_para_ronda, personajes)
+            if terminado:
+                break
 
-    cargar_datos_json(archivo)
     return terminado
+
+def pantalla_ganador(nombre_ganador, avatar_ganador, puntaje_ganador,
+    nombre_perdedor, avatar_perdedor, puntaje_perdedor, nombre, contraseña):
+
+    # 🛡️ Verificación de imágenes válidas
+    if avatar_ganador is None or avatar_perdedor is None:
+        print("❌ Error: avatar no cargado correctamente")
+        pygame.time.wait(2000)
+        return
+
+    # 📸 Redimensionar sin modificar la imagen original
+    avatar_ganador = pygame.transform.scale(avatar_ganador.copy(), (450, 520))
+    avatar_perdedor = pygame.transform.scale(avatar_perdedor.copy(), (350, 400))
+
+    # 🎮 Botones
+    boton_jugar_otra_vez = pygame.Rect(350, 600, 300, 60)
+    boton_menu = pygame.Rect(400, 670, 200, 40)
+
+    running = True
+    while running:
+        display.fill(rosita)
+        mouse_pos = pygame.mouse.get_pos()
+
+        # 🏆 Títulos
+        texto_ganador = fuente_grande.render("GANADOR", True, violeta_profundo)
+        display.blit(texto_ganador, texto_ganador.get_rect(center=(500, 50)))
+
+        texto_nombre = fuente_texto_bold.render(nombre_ganador, True, violeta_profundo)
+        display.blit(texto_nombre, texto_nombre.get_rect(center=(500, 110)))
+
+        # 👑 Avatar ganador
+        display.blit(avatar_ganador, avatar_ganador.get_rect(center=(500, 425)))
+        texto_puntaje_g = fuente_texto_chica.render(f"Puntaje: {puntaje_ganador}", True, blanco)
+        display.blit(texto_puntaje_g, texto_puntaje_g.get_rect(center=(500, 575)))
+
+        # 😢 Avatar perdedor
+        texto_nombre_p = fuente_texto_chica.render(nombre_perdedor, True, violeta_profundo)
+        display.blit(texto_nombre_p, texto_nombre_p.get_rect(center=(825, 180)))
+        display.blit(avatar_perdedor, avatar_perdedor.get_rect(center=(825, 425)))
+        texto_puntaje_p = fuente_texto_chica.render(f"Puntaje: {puntaje_perdedor}", True, blanco)
+        display.blit(texto_puntaje_p, texto_puntaje_p.get_rect(center=(825, 550)))
+
+        # 🔁 Botón jugar otra vez
+        sombra1 = boton_jugar_otra_vez.copy(); sombra1.x += 4; sombra1.y += 4
+        rectangulo_redondeado(display, sombra, sombra1, 12)
+        color1 = lila_suave if boton_jugar_otra_vez.collidepoint(mouse_pos) else blanco
+        rectangulo_redondeado(display, color1, boton_jugar_otra_vez, 12)
+        texto_jugar = fuente_texto_bold.render("Jugar otra vez", True, violeta_profundo)
+        display.blit(texto_jugar, texto_jugar.get_rect(center=boton_jugar_otra_vez.center))
+
+        # ⏪ Botón menú
+        sombra2 = boton_menu.copy(); sombra2.x += 4; sombra2.y += 4
+        rectangulo_redondeado(display, sombra, sombra2, 12)
+        color2 = lila_suave if boton_menu.collidepoint(mouse_pos) else blanco
+        rectangulo_redondeado(display, color2, boton_menu, 12)
+        texto_menu = fuente_texto_chica.render("Menú", True, violeta_profundo)
+        display.blit(texto_menu, texto_menu.get_rect(center=boton_menu.center))
+
+        for evento in pygame.event.get():
+            if evento.type == pygame.QUIT:
+                pygame.quit(); exit()
+            elif evento.type == pygame.MOUSEBUTTONDOWN:
+                if boton_jugar_otra_vez.collidepoint(evento.pos):
+                    print("Jugar otra vez")
+                    running = False  # volvés al flujo anterior
+                elif boton_menu.collidepoint(evento.pos):
+                    menu_principal(nombre, contraseña, personajes)
+
+        pygame.display.update()
+
+
+def jugar_pygame(jugador1_nombre, jugador1_contraseña, jugador2_nombre, jugador2_contraseña, personajes):
+    archivo = parser_json()
+    lista_usuario = archivo['jugadores']
+    
+    jugador1_id = obtener_id_usuario(jugador1_nombre, jugador1_contraseña)
+    jugador2_id = obtener_id_usuario(jugador2_nombre, jugador2_contraseña)
+    jugador1 = lista_usuario[jugador1_id]
+    jugador2 = lista_usuario[jugador2_id]
+    avatar1 = personajes[(jugador1['aspecto'])]
+    avatar2 = personajes[(jugador2['aspecto'])]
+
+    turno_jugador = True
+    en_juego = True
+    puntos_necesarios = 6
+
+    while en_juego:
+        if jugador1['puntos'] >= puntos_necesarios or jugador2['puntos'] >= puntos_necesarios:
+            print("Puntos jugador 1:", jugador1['puntos'])
+            print("Puntos jugador 2:", jugador2['puntos'])
+            en_juego = False
+            break
+        if turno_jugador:
+            perdió_turno = jugar_turno_pygame(jugador1_nombre, jugador1_contraseña, personajes)
+            archivo = parser_json()
+            jugador1 = archivo['jugadores'][jugador1_id]
+            if jugador1['puntos'] >= puntos_necesarios:
+                en_juego = False
+                break
+            if perdió_turno:
+                turno_jugador = False
+        else:
+            perdió_turno = jugar_turno_pygame(jugador2_nombre, jugador2_contraseña, personajes)
+            archivo = parser_json()
+            jugador2 = archivo['jugadores'][jugador2_id]
+            if jugador2['puntos'] >= puntos_necesarios:
+                en_juego = False
+                break
+            if perdió_turno:
+                turno_jugador = True
+
+    archivo = parser_json()
+    lista_usuario = archivo['jugadores']
+    jugador1 = lista_usuario[jugador1_id]
+    jugador2 = lista_usuario[jugador2_id]
+
+    # 🏁 Lógica de victoria
+    if jugador1['puntos'] > jugador2['puntos']:
+        jugador1['wins'] += 1
+        jugador_ganador = jugador1
+        aspecto_ganador = avatar1
+
+        jugador_perdedor = jugador2
+        aspecto_perdedor = avatar2
+
+    elif jugador2['puntos'] > jugador1['puntos']:
+        jugador2['wins'] += 1
+        jugador_ganador = jugador2
+        aspecto_ganador = avatar2
+
+        jugador_perdedor = jugador1
+        aspecto_perdedor = avatar1
+    else:
+        print('Empate!')
+        jugador1['puntos'] = 0
+        jugador2['puntos'] = 0
+        cargar_datos_json(archivo)
+        return
+
+    jugador1['puntos'] = 0
+    jugador2['puntos'] = 0
+    agregar_todas_las_categorias()
+    cargar_datos_json(archivo)
+    pantalla_ganador(jugador_ganador['nombre'], aspecto_ganador, jugador_ganador['wins'],
+                    jugador_perdedor['nombre'], aspecto_perdedor, jugador_perdedor['wins'],
+                    jugador1_nombre, jugador1_contraseña)
 
 pre_menu(personajes)
 

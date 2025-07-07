@@ -1,17 +1,17 @@
 {
     "jugadores": [
         {
-            "nombre": "Denis",
+            "nombre": "denis",
             "contra": "123",
             "aspecto": 3,
             "rondas_jugadas": 12,
             "tiempo_total": 310.3625502586365,
             "promedio_tiempo_por_ronda": 25.86354585488637,
-            "aciertos_totales": 7,
-            "errores_totales": 0,
-            "puntos": 1,
-            "puntos_corona": 2,
-            "wins": 2,
+            "aciertos_totales": 20,
+            "errores_totales": 1,
+            "puntos": 0,
+            "puntos_corona": 0,
+            "wins": 3,
             "categorias_restantes": [
                 "Ciencia",
                 "Geografía",
@@ -21,25 +21,18 @@
             ]
         },
         {
-            "nombre": "Valentina",
+            "nombre": "valen",
             "contra": "456",
             "aspecto": 0,
             "rondas_jugadas": 7,
             "tiempo_total": 24.244866609573364,
             "promedio_tiempo_por_ronda": 3.4635523727961948,
-            "aciertos_totales": 0,
-            "errores_totales": 0,
+            "aciertos_totales": 19,
+            "errores_totales": 5,
             "puntos": 0,
             "puntos_corona": 0,
-            "wins": 0,
-            "categorias_restantes": [
-                "Historia",
-                "Ciencia",
-                "Geografía",
-                "Arte",
-                "Deportes",
-                "Entretenimiento"
-            ]
+            "wins": 1,
+            "categorias_restantes": []
         },
         {
             "nombre": "Fede",

@@ -6,6 +6,7 @@ def crear_usuario(nombre:str, password:str):
         "nombre": nombre,
         "contra": password,
         "rondas_jugadas": 0,
+        "aspecto": 0,
         "tiempo_total": 0,
         "promedio_tiempo_por_ronda": 0,
         "aciertos_totales": 0,
