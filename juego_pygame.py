@@ -725,8 +725,7 @@ def seleccion_modo(nombre, contraseña):
 
             elif evento.type == pygame.MOUSEBUTTONDOWN:
                 if boton_arcade.collidepoint(evento.pos):
-                    print("Modo Arcade seleccionado")
-                    # Acá podés poner: juego_arcade(nombre)
+                    modo_arcade(nombre, contraseña, personajes)
                 elif boton_vs.collidepoint(evento.pos):
                     segundo_jugador_nombre, segundo_jugador_contraseña = inicio_sesion(personajes, generico = True, mensaje_inicio = "Inicie sesión del segundo jugador")
                     jugar_pygame(nombre, contraseña, segundo_jugador_nombre, segundo_jugador_contraseña, personajes)
@@ -1207,15 +1206,13 @@ def pantalla_de_pregunta_4_opciones(nombre, contraseña, personajes, categoria_e
         texto_caja_pregunta = fuente_texto_chica.render(texto_pregunta, True, violeta_profundo)
         display.blit(texto_caja_pregunta, texto_caja_pregunta.get_rect(center=caja_pregunta.center))
 
-        pregunta = fuente_texto_bold.render(texto_pregunta, True, violeta_profundo)
-        display.blit(pregunta, (350, 30))
         categoria = fuente_texto_bold.render(f"Categoría: {categoria_electa}", True, violeta_profundo)
-        display.blit(categoria, (350, 80))
+        display.blit(categoria, (350, 20))
         display.blit(imagen, (20, 20))
         texto_corona = fuente_texto_bold.render(f"Puntos corona: {jugador['puntos_corona']}", True, violeta_profundo)
-        display.blit(texto_corona, (350, 110))
+        display.blit(texto_corona, (350, 55))
         texto_puntos = fuente_texto_bold.render(f"Puntos: {jugador['puntos']}", True, violeta_profundo)
-        display.blit(texto_puntos, (350, 140))
+        display.blit(texto_puntos, (350, 90))
 
 
         sombra_pausa = boton_pausa.copy()
@@ -1372,19 +1369,19 @@ def jugar_turno_pygame(nombre, contraseña, personajes):
     return terminado
 
 def pantalla_ganador(nombre_ganador, avatar_ganador, puntaje_ganador,
-    nombre_perdedor, avatar_perdedor, puntaje_perdedor, nombre, contraseña):
+    nombre_perdedor, avatar_perdedor, puntaje_perdedor, nombre, contraseña, modo_arcade = False):
+    if modo_arcade:
+        archivo = parser_json()
+        lista_usuarios = archivo['jugadores']
+        jugadorid = obtener_id_usuario(nombre, contraseña)
+        jugador = lista_usuarios[jugadorid]
+        jugador['puntos_arcade'] = 0
+        cargar_datos_json(archivo)
 
-    # 🛡️ Verificación de imágenes válidas
-    if avatar_ganador is None or avatar_perdedor is None:
-        print("❌ Error: avatar no cargado correctamente")
-        pygame.time.wait(2000)
-        return
-
-    # 📸 Redimensionar sin modificar la imagen original
     avatar_ganador = pygame.transform.scale(avatar_ganador.copy(), (450, 520))
-    avatar_perdedor = pygame.transform.scale(avatar_perdedor.copy(), (350, 400))
+    if not modo_arcade:
+        avatar_perdedor = pygame.transform.scale(avatar_perdedor.copy(), (350, 400))
 
-    # 🎮 Botones
     boton_jugar_otra_vez = pygame.Rect(350, 600, 300, 60)
     boton_menu = pygame.Rect(400, 670, 200, 40)
 
@@ -1393,26 +1390,27 @@ def pantalla_ganador(nombre_ganador, avatar_ganador, puntaje_ganador,
         display.fill(rosita)
         mouse_pos = pygame.mouse.get_pos()
 
-        # 🏆 Títulos
+        # Títulos
         texto_ganador = fuente_grande.render("GANADOR", True, violeta_profundo)
         display.blit(texto_ganador, texto_ganador.get_rect(center=(500, 50)))
 
         texto_nombre = fuente_texto_bold.render(nombre_ganador, True, violeta_profundo)
         display.blit(texto_nombre, texto_nombre.get_rect(center=(500, 110)))
 
-        # 👑 Avatar ganador
+        # Avatar ganador
         display.blit(avatar_ganador, avatar_ganador.get_rect(center=(500, 425)))
         texto_puntaje_g = fuente_texto_chica.render(f"Puntaje: {puntaje_ganador}", True, blanco)
         display.blit(texto_puntaje_g, texto_puntaje_g.get_rect(center=(500, 575)))
 
-        # 😢 Avatar perdedor
-        texto_nombre_p = fuente_texto_chica.render(nombre_perdedor, True, violeta_profundo)
-        display.blit(texto_nombre_p, texto_nombre_p.get_rect(center=(825, 180)))
-        display.blit(avatar_perdedor, avatar_perdedor.get_rect(center=(825, 425)))
-        texto_puntaje_p = fuente_texto_chica.render(f"Puntaje: {puntaje_perdedor}", True, blanco)
-        display.blit(texto_puntaje_p, texto_puntaje_p.get_rect(center=(825, 550)))
+        # Avatar perdedor
+        if not modo_arcade:
+            texto_nombre_p = fuente_texto_chica.render(nombre_perdedor, True, violeta_profundo)
+            display.blit(texto_nombre_p, texto_nombre_p.get_rect(center=(825, 180)))
+            display.blit(avatar_perdedor, avatar_perdedor.get_rect(center=(825, 425)))
+            texto_puntaje_p = fuente_texto_chica.render(f"Puntaje: {puntaje_perdedor}", True, blanco)
+            display.blit(texto_puntaje_p, texto_puntaje_p.get_rect(center=(825, 550)))
 
-        # 🔁 Botón jugar otra vez
+        # Botón jugar otra vez
         sombra1 = boton_jugar_otra_vez.copy(); sombra1.x += 4; sombra1.y += 4
         rectangulo_redondeado(display, sombra, sombra1, 12)
         color1 = lila_suave if boton_jugar_otra_vez.collidepoint(mouse_pos) else blanco
@@ -1420,7 +1418,7 @@ def pantalla_ganador(nombre_ganador, avatar_ganador, puntaje_ganador,
         texto_jugar = fuente_texto_bold.render("Jugar otra vez", True, violeta_profundo)
         display.blit(texto_jugar, texto_jugar.get_rect(center=boton_jugar_otra_vez.center))
 
-        # ⏪ Botón menú
+        # Botón menú
         sombra2 = boton_menu.copy(); sombra2.x += 4; sombra2.y += 4
         rectangulo_redondeado(display, sombra, sombra2, 12)
         color2 = lila_suave if boton_menu.collidepoint(mouse_pos) else blanco
@@ -1439,6 +1437,36 @@ def pantalla_ganador(nombre_ganador, avatar_ganador, puntaje_ganador,
                     menu_principal(nombre, contraseña, personajes)
 
         pygame.display.update()
+
+def modo_arcade(nombre, contraseña, personajes):
+    categorias = ['Historia', 'Ciencia', 'Geografía', 'Arte', 'Deportes', 'Entretenimiento']
+    archivo = parser_json()
+    lista_usuarios = archivo['jugadores']
+    jugadorid = obtener_id_usuario(nombre, contraseña)
+    jugador = lista_usuarios[jugadorid]
+    indice_avatar = jugador['aspecto']
+    avatar = personajes[indice_avatar]
+
+    while True:
+        categoria_para_ronda = obtener_categoria_aleatoria(categorias)
+        preguntas_dict = parser_csv()
+        numero_pregunta = elegir_numero_de_pregunta_aleatorio(preguntas_dict, categoria_para_ronda)
+        pregunta_de_ronda = preguntas_dict[categoria_para_ronda][numero_pregunta]
+        respuesta = pantalla_de_pregunta_4_opciones(nombre, contraseña, personajes, categoria_para_ronda, pregunta_de_ronda['pregunta'], pregunta_de_ronda['opciones'])
+        if respuesta == pregunta_de_ronda['respuesta']:
+            jugador['puntos_arcade'] += 1
+            jugador['aciertos_totales'] += 1
+            cargar_datos_json(archivo)
+            print('Correcto')
+        else:
+            jugador['errores_totales'] += 1
+            cargar_datos_json(archivo)
+            print('Incorrecto')
+            break
+            
+    pantalla_ganador(nombre, avatar, jugador['puntos_arcade'], '', '', '', nombre, contraseña, modo_arcade = True)
+
+
 
 
 def jugar_pygame(jugador1_nombre, jugador1_contraseña, jugador2_nombre, jugador2_contraseña, personajes):
@@ -1517,7 +1545,9 @@ def jugar_pygame(jugador1_nombre, jugador1_contraseña, jugador2_nombre, jugador
                     jugador_perdedor['nombre'], aspecto_perdedor, jugador_perdedor['wins'],
                     jugador1_nombre, jugador1_contraseña)
 
-pre_menu(personajes)
+
+if __name__ == '__pre_menu__':
+    pre_menu(personajes)
 
 
 

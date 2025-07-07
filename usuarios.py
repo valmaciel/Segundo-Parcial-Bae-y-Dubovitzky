@@ -12,6 +12,7 @@ def crear_usuario(nombre:str, password:str):
         "aciertos_totales": 0,
         "errores_totales": 0,
         "puntos": 0,
+        "puntos_arcade": 0,
         "puntos_corona": 0,
         "wins": 0,
         "categorias_restantes": [

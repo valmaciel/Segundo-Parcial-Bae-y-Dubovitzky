@@ -7,12 +7,14 @@
             "rondas_jugadas": 12,
             "tiempo_total": 310.3625502586365,
             "promedio_tiempo_por_ronda": 25.86354585488637,
-            "aciertos_totales": 20,
-            "errores_totales": 1,
+            "aciertos_totales": 29,
+            "errores_totales": 3,
             "puntos": 0,
+            "puntos_arcade": 0,
             "puntos_corona": 0,
             "wins": 3,
             "categorias_restantes": [
+                "Historia",
                 "Ciencia",
                 "Geografía",
                 "Arte",
@@ -32,7 +34,14 @@
             "puntos": 0,
             "puntos_corona": 0,
             "wins": 1,
-            "categorias_restantes": []
+            "categorias_restantes": [
+                "Historia",
+                "Ciencia",
+                "Geografía",
+                "Arte",
+                "Deportes",
+                "Entretenimiento"
+            ]
         },
         {
             "nombre": "Fede",
@@ -43,6 +52,7 @@
             "aciertos_totales": 0,
             "errores_totales": 0,
             "puntos": 0,
+            "puntos_arcade": 0,
             "puntos_corona": 0,
             "wins": 0,
             "categorias_restantes": [
