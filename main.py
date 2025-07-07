@@ -34,6 +34,8 @@ def main():
                 pass
             case 4:
                 os.system("cls")
+                print("¡Gracias por jugar preguntados! \nSaliendo...")
+                time.delay(3)
                 break
             case x:
                 print("ERROR")
