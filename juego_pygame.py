@@ -327,7 +327,7 @@ def registro():
         pygame.display.update()
 
 #3
-def inicio_sesion(personajes):
+def inicio_sesion(personajes, generico = False, mensaje_inicio = "Iniciar Sesión"):
     nombre = ""
     contraseña = ""
     activo_nombre = True
@@ -335,7 +335,6 @@ def inicio_sesion(personajes):
     mostrar_contraseña = False
     mensaje = ""
     tiempo_mensaje = 0
-    usuario_valido = False
 
     archivo = parser_json()
     usuarios_guardados = archivo['jugadores']
@@ -357,8 +356,10 @@ def inicio_sesion(personajes):
         display.fill(rosita)
 
         # Titulo
-        titulo = fuente_grande.render("Iniciar Sesión", True, violeta_profundo)
-        display.blit(titulo, (360, 50))
+        titulo = fuente_grande.render(mensaje_inicio, True, violeta_profundo)
+        titulo_rect = titulo.get_rect(centerx=display.get_width() // 2)
+        titulo_rect.top = 50
+        display.blit(titulo, titulo_rect)
 
         # Etiquetas
         display.blit(fuente_texto_bold.render("Ingresar nombre de usuario:", True, blanco), (300, 150))
@@ -405,7 +406,10 @@ def inicio_sesion(personajes):
                     if nombre.strip() != "" and contraseña.strip() != "":
                         for i in range(len(usuarios_guardados)):
                             if (usuarios_guardados[i]["nombre"] == nombre) and (usuarios_guardados[i]["contra"] == contraseña):
-                                menu_principal(nombre, contraseña, personajes)
+                                if generico:
+                                    return nombre, contraseña
+                                else:
+                                    menu_principal(nombre, contraseña, personajes)
                             else:
                                 mensaje = "Error, usuario o contraseña incorrecta."
                     else:
@@ -693,8 +697,8 @@ def seleccion_modo(nombre, contraseña):
                     print("Modo Arcade seleccionado")
                     # Acá podés poner: juego_arcade(nombre)
                 elif boton_vs.collidepoint(evento.pos):
-                    jugar_juego(nombre, contraseña)
-                    # Acá podés poner: juego_vs(nombre)
+                    segundo_jugador_nombre, segundo_jugador_contraseña = inicio_sesion(personajes, generico = True, mensaje_inicio = "Inicie sesión del segundo jugador")
+                    jugar_pygame(nombre, contraseña, segundo_jugador_nombre, segundo_jugador_contraseña, personajes)
                 elif boton_volver.collidepoint(evento.pos):
                     return
                 elif rect_ajustes.collidepoint(evento.pos):
@@ -837,6 +841,19 @@ def estadisticas():
 
         pygame.display.update()
 
+def dibujar_boton_item(rect, imagen):
+            sombra_rect = rect.copy()
+            sombra_rect.x += 4
+            sombra_rect.y += 4
+            rectangulo_redondeado(display, sombra, sombra_rect, 16)
+            color = lila_suave if rect.collidepoint(mouse_pos) else blanco
+            rectangulo_redondeado(display, color, rect, 16)
+            display.blit(imagen, imagen.get_rect(center=rect.center))
+
+            # Precio debajo
+            texto_precio = fuente_texto_chica.render("1000 puntos", True, blanco)
+            precio_rect = texto_precio.get_rect(center=(rect.centerx, rect.bottom + 25))
+            display.blit(texto_precio, precio_rect)
 
 #10
 def tienda(nombre):
@@ -887,19 +904,7 @@ def tienda(nombre):
         mouse_pos = pygame.mouse.get_pos()
 
         # Dibujar botones con imágenes y precios
-        def dibujar_boton_item(rect, imagen):
-            sombra_rect = rect.copy()
-            sombra_rect.x += 4
-            sombra_rect.y += 4
-            rectangulo_redondeado(display, sombra, sombra_rect, 16)
-            color = lila_suave if rect.collidepoint(mouse_pos) else blanco
-            rectangulo_redondeado(display, color, rect, 16)
-            display.blit(imagen, imagen.get_rect(center=rect.center))
-
-            # Precio debajo
-            texto_precio = fuente_texto_chica.render("1000 puntos", True, blanco)
-            precio_rect = texto_precio.get_rect(center=(rect.centerx, rect.bottom + 25))
-            display.blit(texto_precio, precio_rect)
+        
 
         dibujar_boton_item(boton_miau, miau)
         dibujar_boton_item(boton_pizza, pizza)
@@ -935,10 +940,393 @@ def tienda(nombre):
 
         pygame.display.update()
 
-# #
-# def pantalla_de_juego()
+def mostrar_pausa():
+    boton_continuar = pygame.Rect(375, 300, 250, 60)
+    boton_menu = pygame.Rect(375, 400, 250, 60)
 
-# pantalla_de_carga()
+    en_pausa = True
+    while en_pausa:
+        display.fill(rosita)
+
+        titulo = fuente_grande.render("Pausa", True, violeta_profundo)
+        display.blit(titulo, titulo.get_rect(center=(500, 200)))
+
+        mouse_pos = pygame.mouse.get_pos()
+
+        # Botón continuar
+        sombra_rect = boton_continuar.copy()
+        sombra_rect.x += 4; sombra_rect.y += 4
+        rectangulo_redondeado(display, sombra, sombra_rect, 12)
+        color = lila_suave if boton_continuar.collidepoint(mouse_pos) else blanco
+        rectangulo_redondeado(display, color, boton_continuar, 12)
+        texto = fuente_texto_bold.render("Continuar", True, violeta_profundo)
+        display.blit(texto, texto.get_rect(center=boton_continuar.center))
+
+        # Botón volver a menú
+        sombra_rect = boton_menu.copy()
+        sombra_rect.x += 4; sombra_rect.y += 4
+        rectangulo_redondeado(display, sombra, sombra_rect, 12)
+        color = lila_suave if boton_menu.collidepoint(mouse_pos) else blanco
+        rectangulo_redondeado(display, color, boton_menu, 12)
+        texto = fuente_texto_bold.render("Volver al menú", True, violeta_profundo)
+        display.blit(texto, texto.get_rect(center=boton_menu.center))
+
+        for evento in pygame.event.get():
+            if evento.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+            elif evento.type == pygame.MOUSEBUTTONDOWN:
+                if boton_continuar.collidepoint(evento.pos):
+                    en_pausa = False
+                elif boton_menu.collidepoint(evento.pos):
+                    pre_menu(personajes)
+                    return  # sale de pausa completamente
+
+        pygame.display.update()
+
+
+def pantalla_de_pregunta_6_opciones(nombre, contraseña):
+    archivo = parser_json()
+    lista_usuarios = archivo['jugadores']
+    usuario_id = obtener_id_usuario(nombre, contraseña)
+    indice_aspecto = lista_usuarios[usuario_id]['aspecto']
+    texto_pregunta = "Elige una categoria"
+
+    #posiciones
+    centro_x = display.get_width() // 2
+    centro_y = display.get_height() // 2
+
+    #cajas
+    boton_opcion_1 = pygame.Rect(centro_x - 450, centro_y - 50, 400, 100)
+    boton_opcion_2 = pygame.Rect(centro_x + 50, centro_y - 50, 400, 100)
+    boton_opcion_3 = pygame.Rect(centro_x - 450, centro_y + 75, 400, 100)
+    boton_opcion_4 = pygame.Rect(centro_x + 50, centro_y + 75, 400, 100)
+    boton_opcion_5 = pygame.Rect(centro_x - 450, centro_y + 200, 400, 100)
+    boton_opcion_6 = pygame.Rect(centro_x + 50, centro_y + 200, 400, 100)
+    boton_pausa = pygame.Rect(850, 50, 100, 50)
+    caja_pregunta = pygame.Rect(centro_x - 220, centro_y - 225, 550, 150)
+
+    # Imagen
+    imagen = personajes[indice_aspecto]    #cambiar por personaje q este usando el usuario
+    imagen = pygame.transform.scale(imagen, (270, 320))
+
+    running = True
+    while running:
+        display.fill(rosita)
+        mouse_pos = pygame.mouse.get_pos()
+
+        # Botón de pausa
+        sombra_pausa = boton_pausa.copy()
+        sombra_pausa.x += 4; sombra_pausa.y += 4
+        rectangulo_redondeado(display, sombra, sombra_pausa, 12)
+        color_pausa = lila_suave if boton_pausa.collidepoint(mouse_pos) else blanco
+        rectangulo_redondeado(display, color_pausa, boton_pausa, 12)
+        texto_pausa = fuente_texto_chica.render("Pausa", True, violeta_profundo)
+        display.blit(texto_pausa, texto_pausa.get_rect(center=boton_pausa.center))
+
+        #caja pregunta
+        sombra_caja_pregunta = caja_pregunta.copy()
+        sombra_caja_pregunta.x += 4; sombra_caja_pregunta.y += 4
+        rectangulo_redondeado(display, sombra, sombra_caja_pregunta, 12)
+        color_caja_pregunta = blanco
+        rectangulo_redondeado(display, color_caja_pregunta, caja_pregunta, 12)
+        texto_caja_pregunta = fuente_texto_chica.render(texto_pregunta, True, violeta_profundo)
+        display.blit(texto_caja_pregunta, texto_caja_pregunta.get_rect(center=caja_pregunta.center))
+
+        pregunta = fuente_texto_bold.render(texto_pregunta, True, violeta_profundo)
+        display.blit(pregunta, (350, 30))
+        categoría = fuente_texto_bold.render("", True, violeta_profundo)
+        display.blit(categoría, (350, 80))
+        display.blit(imagen, (20, 20))
+
+        sombra_pausa = boton_pausa.copy()
+        sombra_pausa.x += 4; sombra_pausa.y += 4
+        rectangulo_redondeado(display, sombra, sombra_pausa, 12)
+        color_pausa = lila_suave if boton_pausa.collidepoint(mouse_pos) else blanco
+        rectangulo_redondeado(display, color_pausa, boton_pausa, 12)
+        texto_pausa = fuente_texto_chica.render("Pausa", True, violeta_profundo)
+        display.blit(texto_pausa, texto_pausa.get_rect(center=boton_pausa.center))
+
+        opciones = [
+            (boton_opcion_1, "Historia"),
+            (boton_opcion_2, "Ciencia"),
+            (boton_opcion_3, "Geografía"),
+            (boton_opcion_4, "Arte"),
+            (boton_opcion_5, "Deportes"),
+            (boton_opcion_6, "Entretenimiento")
+        ]
+
+        for rect, texto in opciones:
+            # Sombra
+            sombra_rect = rect.copy()
+            sombra_rect.x += 4
+            sombra_rect.y += 4
+            rectangulo_redondeado(display, sombra, sombra_rect, radius=12)
+
+            # Detectar si el mouse está encima
+            if rect.collidepoint(mouse_pos):
+                color = lila_suave
+            else:
+                color = blanco
+
+            # Botones
+            rectangulo_redondeado(display, color, rect, radius=12)
+            texto_render = fuente_texto_chica.render(texto, True, violeta_profundo)
+            text_rect = texto_render.get_rect(center=rect.center)
+            display.blit(texto_render, text_rect)
+
+        for evento in pygame.event.get():
+            if evento.type == pygame.QUIT:
+                running = False
+
+            elif evento.type == pygame.MOUSEBUTTONDOWN:
+                if boton_opcion_1.collidepoint(evento.pos):
+                    categoria_electa = "Historia"
+                    return categoria_electa
+
+                elif boton_opcion_2.collidepoint(evento.pos):
+                    categoria_electa = "Ciencia"
+                    return categoria_electa
+
+                elif boton_opcion_3.collidepoint(evento.pos):
+                    categoria_electa = "Geografía"
+                    return categoria_electa
+
+                elif boton_opcion_4.collidepoint(evento.pos):
+                    categoria_electa = "Arte"
+                    return categoria_electa
+
+                elif boton_opcion_5.collidepoint(evento.pos):
+                    categoria_electa = "Deportes"
+                    return categoria_electa
+                    
+                elif boton_opcion_6.collidepoint(evento.pos):
+                    categoria_electa = "Entretenimiento"
+                    return categoria_electa
+
+                elif boton_pausa.collidepoint(evento.pos):
+                    mostrar_pausa()
+
+        pygame.display.update()
+
+def pantalla_de_pregunta_4_opciones(nombre, contraseña, personajes, categoria_electa, texto_pregunta, lista_respuestas):
+    archivo = parser_json()
+    lista_usuarios = archivo['jugadores']
+    usuario_id = obtener_id_usuario(nombre, contraseña)
+    indice_aspecto = lista_usuarios[usuario_id]['aspecto']
+    respuesta_a = lista_respuestas[0]
+    respuesta_b = lista_respuestas[1]
+    respuesta_c = lista_respuestas[2]
+    respuesta_d = lista_respuestas[3]
+
+    #posiciones
+    centro_x = display.get_width() // 2
+    centro_y = display.get_height() // 2
+
+    #Botones
+    boton_opcion_1 = pygame.Rect(centro_x - 450, centro_y, 400, 100)
+    boton_opcion_2 = pygame.Rect(centro_x + 50, centro_y, 400, 100)
+    boton_opcion_3 = pygame.Rect(centro_x - 450, centro_y + 150, 400, 100)
+    boton_opcion_4 = pygame.Rect(centro_x + 50, centro_y + 150, 400, 100)
+    boton_pausa = pygame.Rect(850, 50, 100, 50)
+    caja_pregunta = pygame.Rect(centro_x - 220, centro_y - 225, 550, 150) 
+    
+
+    # Imagen decorativa (más grande que el botón de pausa)
+    imagen = personajes[indice_aspecto]    #cambiar por personaje q este usando el usuario
+    imagen = pygame.transform.scale(imagen, (270, 320))
+
+    running = True
+    while running:
+        display.fill(rosita)
+        mouse_pos = pygame.mouse.get_pos()
+
+        # Botón de pausa
+        sombra_pausa = boton_pausa.copy()
+        sombra_pausa.x += 4; sombra_pausa.y += 4
+        rectangulo_redondeado(display, sombra, sombra_pausa, 12)
+        color_pausa = lila_suave if boton_pausa.collidepoint(mouse_pos) else blanco
+        rectangulo_redondeado(display, color_pausa, boton_pausa, 12)
+        texto_pausa = fuente_texto_chica.render("Pausa", True, violeta_profundo)
+        display.blit(texto_pausa, texto_pausa.get_rect(center=boton_pausa.center))
+
+        #caja pregunta
+        
+        sombra_caja_pregunta = caja_pregunta.copy()
+        sombra_caja_pregunta.x += 4; sombra_caja_pregunta.y += 4
+        rectangulo_redondeado(display, sombra, sombra_caja_pregunta, 12)
+        color_caja_pregunta = blanco
+        rectangulo_redondeado(display, color_caja_pregunta, caja_pregunta, 12)
+        texto_caja_pregunta = fuente_texto_chica.render(texto_pregunta, True, violeta_profundo)
+        display.blit(texto_caja_pregunta, texto_caja_pregunta.get_rect(center=caja_pregunta.center))
+
+        pregunta = fuente_texto_bold.render(texto_pregunta, True, violeta_profundo)
+        display.blit(pregunta, (350, 30))
+        categoria = fuente_texto_bold.render(f"Categoría: {categoria_electa}", True, violeta_profundo)
+        display.blit(categoria, (350, 80))
+        display.blit(imagen, (20, 20))
+
+        sombra_pausa = boton_pausa.copy()
+        sombra_pausa.x += 4; sombra_pausa.y += 4
+        rectangulo_redondeado(display, sombra, sombra_pausa, 12)
+        color_pausa = lila_suave if boton_pausa.collidepoint(mouse_pos) else blanco
+        rectangulo_redondeado(display, color_pausa, boton_pausa, 12)
+        texto_pausa = fuente_texto_chica.render("Pausa", True, violeta_profundo)
+        display.blit(texto_pausa, texto_pausa.get_rect(center=boton_pausa.center))
+
+        opciones = [
+            (boton_opcion_1, respuesta_a),
+            (boton_opcion_2, respuesta_b),
+            (boton_opcion_3, respuesta_c),
+            (boton_opcion_4, respuesta_d)
+        ]
+
+        for rect, texto in opciones:
+            # Sombra
+            sombra_rect = rect.copy()
+            sombra_rect.x += 4
+            sombra_rect.y += 4
+            rectangulo_redondeado(display, sombra, sombra_rect, radius=12)
+
+            # Detectar si el mouse está encima
+            if rect.collidepoint(mouse_pos):
+                color = lila_suave
+            else:
+                color = blanco
+
+            # Botones
+            rectangulo_redondeado(display, color, rect, radius=12)
+            texto_render = fuente_texto_chica.render(texto, True, violeta_profundo)
+            text_rect = texto_render.get_rect(center=rect.center)
+            display.blit(texto_render, text_rect)
+
+        for evento in pygame.event.get():
+            if evento.type == pygame.QUIT:
+                running = False
+
+            elif evento.type == pygame.MOUSEBUTTONDOWN:
+                if boton_opcion_1.collidepoint(evento.pos):
+                    respuesta = 'a'
+                    return respuesta
+
+                elif boton_opcion_2.collidepoint(evento.pos):
+                    respuesta = 'b'
+                    return respuesta
+
+                elif boton_opcion_3.collidepoint(evento.pos):
+                    respuesta = 'c'
+                    return respuesta
+
+                elif boton_opcion_4.collidepoint(evento.pos):
+                    respuesta = 'd'
+                    return respuesta
+
+                elif boton_pausa.collidepoint(evento.pos):
+                    mostrar_pausa()
+
+        pygame.display.update()
+
+def jugar_pygame(jugador1_nombre, jugador1_contraseña, jugador2_nombre, jugador2_contraseña, personajes):
+    archivo = parser_json()
+    lista_usuario = archivo['jugadores']
+    
+    jugador1_id = obtener_id_usuario(jugador1_nombre, jugador1_contraseña)
+    jugador2_id = obtener_id_usuario(jugador2_nombre, jugador2_contraseña)
+    jugador1 = lista_usuario[jugador1_id]
+    jugador2 = lista_usuario[jugador2_id]
+
+    turno_jugador = True
+    en_juego = True
+    puntos_necesarios = 6
+
+    while en_juego:
+        if jugador1['puntos'] >= puntos_necesarios or jugador2['puntos'] >= puntos_necesarios:
+            en_juego = False
+            break
+
+        if turno_jugador:
+            turno_jugador = jugar_turno_pygame(jugador1_nombre, jugador1_contraseña, personajes)
+        else:
+            turno_jugador = jugar_turno_pygame(jugador2_nombre, jugador2_contraseña, personajes)
+            turno_jugador = not turno_jugador  # sigue rotando
+
+def jugar_ronda_normal(nombre, contraseña, categoria_para_ronda, personajes):
+    terminado = False
+    archivo = parser_json()
+    preguntas_dict = parser_csv()
+    lista_usuarios = archivo['jugadores']
+    jugador_id = obtener_id_usuario(nombre, contraseña)
+    jugador = lista_usuarios[jugador_id]
+
+    while not terminado:
+        pregunta_numero = elegir_numero_de_pregunta_aleatorio(preguntas_dict, categoria_para_ronda)
+        pregunta_de_ronda = preguntas_dict[categoria_para_ronda][pregunta_numero]
+        respuesta = pantalla_de_pregunta_4_opciones(nombre, contraseña, personajes, categoria_para_ronda, pregunta_de_ronda['pregunta'], pregunta_de_ronda['opciones'])
+        if respuesta == pregunta_de_ronda['respuesta']:
+            jugador['puntos_corona'] += 1
+            jugador['aciertos_totales'] += 1
+            cargar_datos_json(archivo)
+            print('Correcto')
+        else:
+            jugador['puntos_corona'] = 0
+            jugador['errores_totales'] += 1
+            terminado = True
+            cargar_datos_json(archivo)
+            print('Incorrecto')
+            break
+        break
+    return terminado
+
+def jugar_ronda_corona(nombre, contraseña, personajes):    
+    terminado = False
+    archivo = parser_json()
+    preguntas_dict = parser_csv()
+    lista_usuarios = archivo['jugadores']
+    jugador_id = obtener_id_usuario(nombre, contraseña)
+    jugador = lista_usuarios[jugador_id]
+
+    while not terminado:
+        categoria_para_ronda = pantalla_de_pregunta_6_opciones(nombre, contraseña)
+        pregunta_numero = elegir_numero_de_pregunta_aleatorio(preguntas_dict, categoria_para_ronda)
+        pregunta_de_ronda = preguntas_dict[categoria_para_ronda][pregunta_numero]
+        respuesta = pantalla_de_pregunta_4_opciones(nombre, contraseña, personajes, categoria_para_ronda, pregunta_de_ronda['pregunta'], pregunta_de_ronda['opciones'])
+        if respuesta == pregunta_de_ronda['respuesta']:
+            jugador['puntos'] += 1
+            jugador['puntos_corona'] = 0
+            jugador['aciertos_totales'] += 1
+            cargar_datos_json(archivo)
+            print('Correcto')
+        else:
+            jugador['puntos_corona'] = 0
+            jugador['errores_totales'] += 1
+            terminado = True
+            cargar_datos_json(archivo)
+            print('Incorrecto')
+    return terminado
+    
+def jugar_turno_pygame(nombre, contraseña, personajes):
+    jugador_id = obtener_id_usuario(nombre, contraseña)
+    archivo = parser_json()
+    lista_usuarios = archivo['jugadores']
+    jugador = lista_usuarios[jugador_id]
+
+    categorias = ['Historia', 'Ciencia', 'Geografía', 'Arte', 'Deportes', 'Entretenimiento', 'Corona']
+    
+    categoria_para_ronda = obtener_categoria_aleatoria(categorias)
+
+    terminado = False
+
+    while not terminado:
+        if jugador['puntos'] >= 6:
+            break
+        elif calcular_puntos_coronas(categoria_para_ronda, jugador['puntos_corona']):
+            terminado = jugar_ronda_corona(nombre, contraseña, personajes)
+        else:
+            terminado = jugar_ronda_normal(nombre, contraseña, categoria_para_ronda, personajes)
+
+    cargar_datos_json(archivo)
+    return terminado
+
 pre_menu(personajes)
 
 

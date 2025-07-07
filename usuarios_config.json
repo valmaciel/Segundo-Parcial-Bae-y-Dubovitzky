@@ -3,18 +3,18 @@
         {
             "nombre": "Denis",
             "contra": "123",
-            "aspecto": 1,
+            "aspecto": 3,
             "rondas_jugadas": 12,
             "tiempo_total": 310.3625502586365,
             "promedio_tiempo_por_ronda": 25.86354585488637,
-            "aciertos_totales": 4,
+            "aciertos_totales": 7,
             "errores_totales": 0,
-            "puntos": 0,
-            "puntos_corona": 0,
+            "puntos": 1,
+            "puntos_corona": 2,
             "wins": 2,
             "categorias_restantes": [
                 "Ciencia",
-                "Geograf\u00eda",
+                "Geografía",
                 "Arte",
                 "Deportes",
                 "Entretenimiento"
@@ -35,7 +35,27 @@
             "categorias_restantes": [
                 "Historia",
                 "Ciencia",
-                "Geograf\u00eda",
+                "Geografía",
+                "Arte",
+                "Deportes",
+                "Entretenimiento"
+            ]
+        },
+        {
+            "nombre": "Fede",
+            "contra": "789",
+            "rondas_jugadas": 0,
+            "tiempo_total": 0,
+            "promedio_tiempo_por_ronda": 0,
+            "aciertos_totales": 0,
+            "errores_totales": 0,
+            "puntos": 0,
+            "puntos_corona": 0,
+            "wins": 0,
+            "categorias_restantes": [
+                "Historia",
+                "Ciencia",
+                "Geografía",
                 "Arte",
                 "Deportes",
                 "Entretenimiento"

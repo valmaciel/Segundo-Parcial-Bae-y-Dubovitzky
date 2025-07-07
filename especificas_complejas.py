@@ -50,7 +50,7 @@ def jugar_turno(jugadorid:int , categorias:list, preguntas_dict:dict, categorias
     terminado = False
     jugador = jugadores['jugadores'][jugadorid]
     while not terminado:
-        if jugador['puntos'] >= 1:
+        if jugador['puntos'] >= 6:
             break
         print(f'Puntos de corona: {jugador['puntos_corona']}\n')
         categoria_electa = obtener_categoria_aleatoria(categorias)
