@@ -24,10 +24,7 @@ icono = pygame.image.load("imagenes/corazoncito.png")
 pygame.display.set_icon(icono)
 
 # Colores
-
 modo_daltonico = False
-
-
 
 # Fuente
 fuente_grande = pygame.font.SysFont("Segoe UI", 50, bold=True)
@@ -88,7 +85,7 @@ aplicar_modo_daltonico()
 
 #1
 def pantalla_de_carga():
-    
+
     display.fill(rosita)
     duracion = 4
     tiempo_inicial = time.time()
@@ -107,7 +104,8 @@ def pantalla_de_carga():
         display.blit(texto_render, (400, 350))
 
         pygame.display.update()
-        pygame.time.delay(400) 
+        pygame.time.delay(400)
+    pre_menu(personajes)
 
 #2
 def pre_menu(personajes):
@@ -1028,7 +1026,6 @@ def mostrar_pausa():
 
         pygame.display.update()
 
-
 def pantalla_de_pregunta_6_opciones(nombre, contraseña):
     archivo = parser_json()
     lista_usuarios = archivo['jugadores']
@@ -1464,12 +1461,12 @@ def modo_arcade(nombre, contraseña, personajes):
             print('Incorrecto')
             break
             
+def jugar_pygame(jugador1_nombre, jugador1_contraseña, jugador2_nombre, jugador2_contraseña, personajes):
+
+
+
     pantalla_ganador(nombre, avatar, jugador['puntos_arcade'], '', '', '', nombre, contraseña, modo_arcade = True)
 
-
-
-
-def jugar_pygame(jugador1_nombre, jugador1_contraseña, jugador2_nombre, jugador2_contraseña, personajes):
     archivo = parser_json()
     lista_usuario = archivo['jugadores']
     
@@ -1545,9 +1542,7 @@ def jugar_pygame(jugador1_nombre, jugador1_contraseña, jugador2_nombre, jugador
                     jugador_perdedor['nombre'], aspecto_perdedor, jugador_perdedor['wins'],
                     jugador1_nombre, jugador1_contraseña)
 
-
-if __name__ == '__pre_menu__':
-    pre_menu(personajes)
+pantalla_de_carga()
 
 
 
