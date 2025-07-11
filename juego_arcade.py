@@ -42,6 +42,8 @@ def jugar_pregunta_arcade(usuario:str, dificultad:str, vidas:int, rondas_jugadas
         print("\n✅ ¡Correcto!")
         aciertos_partida += 1
         agregar_estadistica(usuario, "aciertos_totales")
+        agregar_estadistica(usuario, "puntos_totales", pregunta_actual["puntaje"])
+        agregar_monedas(usuario, pregunta_actual["puntaje"])
     else:
         print("\n❌ Incorrecto...")
         errores_partida += 1

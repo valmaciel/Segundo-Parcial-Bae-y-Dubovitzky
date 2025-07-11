@@ -121,3 +121,14 @@ def filtrar_por_categoria(categoria_deseada):
 
     return diccionario_preguntas_final
 
+def verificar_accesibilidad(opcion_accesibilidad:str):
+    archivo_configuracion = leer_archivo_json("configfiles/config.json")
+    bandera = False
+    if archivo_configuracion["accesibilidad"][opcion_accesibilidad]:
+        bandera = True
+    return bandera
+
+def agregar_monedas(usuario:str, cantidad:int):
+    archivo_usuarios = leer_archivo_json()
+    archivo_usuarios[usuario]["monedas"] += cantidad
+    escribir_archivo_json()

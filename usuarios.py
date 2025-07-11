@@ -18,7 +18,8 @@ def crear_estadisticas(usuario:str) -> None:
         "aciertos_totales": 0,
         "errores_totales": 0,
         "tiempo_total": 0,
-        "rondas_jugadas": 0
+        "rondas_jugadas": 0,
+        "puntos_totales": 0
     }
     escribir_archivo_json(estadisticas_usuario, "configfiles/estadisticas.json")
 

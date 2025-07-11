@@ -4,13 +4,15 @@
         "aciertos_totales": 74,
         "errores_totales": 52,
         "tiempo_total": 92.12757873535156,
-        "rondas_jugadas": 124
+        "rondas_jugadas": 124,
+        "puntos_totales": 0
     },
     "valen": {
         "partidas_ganadas": 0,
         "aciertos_totales": 92,
         "errores_totales": 29,
         "tiempo_total": 92.35556650161743,
-        "rondas_jugadas": 121
+        "rondas_jugadas": 121,
+        "puntos_totales": 0
     }
 }
