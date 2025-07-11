@@ -1,0 +1,51 @@
+id,categoria,pregunta,opcion_a,opcion_b,opcion_c,opcion_d,respuesta_correcta,dificultad,puntaje
+1,antigua,¿Cuál de estas civilizaciones es considerada una de las primeras en desarrollar la escritura?,Egipcios,Romanos,Aztecas,Chinos,a,1,10
+2,antigua,¿Qué maravilla antigua se encuentra en Egipto?,La Gran Muralla,Pirámides de Giza,Templo de Artemisa,Coloso de Rodas,b,1,10
+3,antigua,¿Cuál era el principal sistema de gobierno en las primeras ciudades-estado mesopotámicas?,Democracia,Monarquía,República,Teocracia,d,2,12
+4,antigua,¿Quién fue el rey que unificó Mesopotamia bajo un solo imperio?,Hammurabi,Salomón,Julio César,Pericles,a,2,12
+5,antigua,¿Cuál es el código de leyes más antiguo conocido?,Código de Hammurabi,Magna Carta,Constitución Romana,Edicto de Milán,a,3,15
+6,clasica,¿Cuál civilización clásica fundó la democracia en Atenas?,Egipcios,Griegos,Romanos,Persas,b,2,12
+7,clasica,¿Qué construcción romana permitía transportar agua a largas distancias?,Acueducto,Coliseo,Pantheon,Foro,a,2,12
+8,clasica,¿Quién fue el líder macedonio que conquistó gran parte del mundo conocido?,Alejandro Magno,César Augusto,Julio César,Ciro el Grande,a,3,15
+9,clasica,¿Qué guerra enfrentó a Atenas y Esparta?,Guerras Médicas,Guerras Púnicas,Guerras del Peloponeso,Guerras Civiles,c,3,15
+10,clasica,¿Cuál fue la lengua común del Imperio Romano?,Griego,Latín,Hebreo,Egipcio,b,1,10
+11,clasica,¿Quién fue el último emperador romano de Occidente?,Rómulo Augusto,Julio César,Constantino,Trajano,a,3,15
+12,clasica,¿Qué civilización creó el Partenón?,Griegos,Romanos,Etruscos,Fenicios,a,2,12
+13,clasica,¿Cuál fue la capital del Imperio Persa aqueménida?,Persépolis,Babilonia,Jerusalén,Susa,a,3,15
+14,clasica,¿Qué sistema filosófico fundó Sócrates?,Estoicismo,Platonismo,Socraticismo,No tuvo un sistema, c,4, 18
+15,clasica,¿En qué batalla se enfrentaron Alejandro Magno y Darío III?,Maratón,Issos,Gaugamela,Cannae,c,3,15
+16,medieval,¿Cuál fue la principal religión en Europa durante la Edad Media?,Cristianismo,Islam,Hinduismo,Budismo,a,2,12
+17,medieval,¿Qué estructura defensiva fue característica de la Edad Media?,Castillos,Acueductos,Templos,Pirámides,a,2,12
+18,medieval,¿Qué sistema económico y social caracterizó la Edad Media europea?,Feudalismo,Capitalismo,Comunismo,Socialismo,a,3,15
+19,medieval,¿Quién fue el líder de los francos que unificó gran parte de Europa occidental?,Carlomagno,Guillermo el Conquistador,Roberto Guiscard,Alfredo el Grande,a,3,15
+20,medieval,¿Qué evento marcó el fin tradicional de la Edad Media?,Descubrimiento de América,La Revolución Francesa,La Caída de Constantinopla,La Reforma Protestante,c,3,15
+21,medieval,¿Qué institución tuvo gran poder durante la Edad Media?,La Iglesia Católica,El Senado,El Parlamento,El Consejo de Nobles,a,2,12
+22,medieval,¿Cuál fue el conflicto entre cristianos y musulmanes en Tierra Santa?,Las Cruzadas,La Reconquista,La Inquisición,La Guerra de los Cien Años,a,3,15
+23,renacimiento,¿En qué ciudad italiana comenzó el Renacimiento?,Florencia,Roma,Venecia,Milan,a,3,15
+24,renacimiento,¿Quién pintó "La Última Cena"?,Miguel Ángel,Leonardo da Vinci,Rafael,Donatello,b,3,15
+25,renacimiento,¿Qué invento revolucionó la difusión del conocimiento en el Renacimiento?,Imprenta,Pólvora,Bússola,Telescopio,a,3,15
+26,renacimiento,¿Qué pensador escribió "El Príncipe"?,Machiavelli,Galileo,Copérnico,Kepler,a,4,18
+27,renacimiento,¿Cuál fue una importante consecuencia del Renacimiento?,El Humanismo,La Caída de Roma,La Revolución Industrial,La Guerra Fría,a,3,15
+28,renacimiento,¿Qué descubrimiento geográfico importante se hizo en esta época?,El Nuevo Mundo,La Ruta de la Seda,La India,Australia,a,2,12
+29,renacimiento,¿Quién pintó la Capilla Sixtina?,Leonardo da Vinci,Miguel Ángel,Rafael,Titán,b,3,15
+30,industrial,¿Qué invento es considerado el inicio de la Revolución Industrial?,La máquina de vapor,El telar mecánico,El motor de combustión,La imprenta,a,3,15
+31,industrial,¿En qué país comenzó la Revolución Industrial?,Reino Unido,Francia,Alemania,Estados Unidos,a,2,12
+32,industrial,¿Qué sector se desarrolló principalmente durante la Revolución Industrial?,Manufactura,Agricultura,Pesca,Minería,a,2,12
+33,industrial,¿Qué invento facilitó el transporte ferroviario?,Locomotora a vapor,Automóvil,Barco de vapor,Avión,a,3,15
+34,industrial,¿Cuál fue un efecto social importante de la Revolución Industrial?,Urbanización,Feudalismo,Colonización,Renacimiento,a,3,15
+35,industrial,¿Quién inventó la bombilla eléctrica?,Thomas Edison,Alexander Graham Bell,Nikola Tesla,James Watt,a,3,15
+36,industrial,¿Qué documento político inspiró las revoluciones liberales del siglo XIX?,La Declaración de los Derechos del Hombre y del Ciudadano,El Código Napoleónico,La Carta Magna,El Manifiesto Comunista,a,4,18
+37,industrial,¿Qué movimiento buscaba derechos laborales y mejores condiciones?,Socialismo,Capitalismo,Feudalismo,Imperialismo,a,3,15
+38,moderna,¿Qué guerra marcó el fin del siglo XIX y mostró el poderío militar?,Guerra Franco-Prusiana,Primera Guerra Mundial,Segunda Guerra Mundial,Guerra Civil Americana,a,3,15
+39,moderna,¿Cuál fue el país que inició la Primera Guerra Mundial?,Austria-Hungría,Serbia,Alemania,Rusia,a,3,15
+40,moderna,¿Qué revolución se produjo en Rusia en 1917?,Revolución de Octubre,Revolución Francesa,Revolución Industrial,Revolución Americana,a,4,18
+41,moderna,¿Qué tratado puso fin a la Primera Guerra Mundial?,Tratado de Versalles,Tratado de Tordesillas,Tratado de París,Tratado de Utrecht,a,3,15
+42,moderna,¿Qué avance tecnológico fue importante en la Primera Guerra Mundial?,Aviones,Tanques,Naves Espaciales,Submarinos,b,3,15
+43,atomica,¿Qué país lanzó las bombas atómicas en 1945?,Estados Unidos,Alemania,Unión Soviética,Japón,a,4,18
+44,atomica,¿Qué conflicto representó la Guerra Fría?,EEUU vs URSS,Alemania vs Francia,China vs Japón,Inglaterra vs España,a,4,18
+45,atomica,¿Qué tecnología permitió la exploración espacial?,Cohetes,Aviones,Barcos,Tanques,a,3,15
+46,atomica,¿Quién fue el primer hombre en la Luna?,Neil Armstrong,Buzz Aldrin,Yuri Gagarin,Michael Collins,a,3,15
+47,informacion,¿Qué tecnología revolucionó la comunicación en los años 90?,Internet,Radio,Teléfono,Morse,a,2,12
+48,informacion,¿Cuál es el principal lenguaje de programación para la web?,Java,C++,HTML,Python,c,3,15
+49,informacion,¿Qué empresa lanzó el sistema operativo Windows?,Apple,Microsoft,Google,IBM,b,2,12
+50,informacion,¿Qué red social fue pionera en la interacción social digital?,Facebook,MySpace,Twitter,LinkedIn,b,3,15

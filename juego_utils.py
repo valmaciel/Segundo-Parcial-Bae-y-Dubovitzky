@@ -1,0 +1,123 @@
+from parser import *
+from input import *
+import random
+import os
+import time
+
+def agregar_estadistica(usuario:str, estadistica:str, cantidad:float = 1):
+    archivo_estadisticas = leer_archivo_json("configfiles/estadisticas.json")
+    estadisticas_usuario = archivo_estadisticas[usuario]
+    estadisticas_usuario[estadistica] += cantidad
+    escribir_archivo_json(archivo_estadisticas, "configfiles/estadisticas.json")
+
+def elegir_pregunta_random(dificultad:str):
+    preguntas_diccionario = parser_csv()
+    preguntas_de_dificultad = preguntas_diccionario[dificultad]
+    id_random = random.randint(1, len(preguntas_de_dificultad))
+    pregunta_electa = preguntas_de_dificultad[id_random]
+    return pregunta_electa
+
+def calcular_tiempo(inicio:float, final:float) -> float:
+    tiempo_total = final - inicio
+    return tiempo_total
+
+def hacer_pregunta(preguntas_validas:list, vidas:int, dificultad:str, usuario:str, puntos_corona:int, categorias_restantes:list, modo_versus:bool = False, modo_corona:bool = False, categoria_electa:int = 0):
+    random.shuffle(preguntas_validas)
+    pregunta_actual = preguntas_validas.pop()
+    os.system("cls")
+    if modo_versus:
+        print(f"Turno de: {usuario}")
+        print(f"Puntos corona: {puntos_corona}")
+    else:
+        print("Vidas: " + " ❤️ " * vidas)
+    print(f"\nDificultad: {dificultad}")
+    print(f"Época: {pregunta_actual['categoria'].capitalize()}\n")
+    print(pregunta_actual["pregunta"])
+    opciones = pregunta_actual["opciones"]
+    for i in range(len(opciones)):
+        print(f"{chr(97 + i)}) {opciones[i]}")
+    return pregunta_actual
+
+def obtener_lista_preguntas_por_dificultad(dificultad:str, categoria_corona:str = ""):
+    archivo_preguntas = parser_csv()
+    match dificultad:
+        case "Fácil":
+            dificultades_permitidas = ["1", "2"]
+        case "Normal":
+            dificultades_permitidas = ["1", "2", "3"]
+        case "Difícil":
+            dificultades_permitidas = ["2", "3", "4"]
+        case "Versus":
+            dificultades_permitidas = ["1", "2", "3", "4"]
+            archivo_preguntas_filtrado = filtrar_por_categoria(categoria_corona)
+    preguntas_validas = []
+    if categoria_corona != "":
+        for dificultad in archivo_preguntas_filtrado:
+            preguntas_validas.extend(archivo_preguntas_filtrado[dificultad])
+    else:
+        for dificultad in dificultades_permitidas:
+            preguntas_validas.extend(archivo_preguntas[dificultad])
+    
+    return preguntas_validas
+
+def obtener_y_validar_respuesta_pregunta(pregunta:dict):
+    inicio_cronometro = time.time()
+    respuesta_ingresada = obtener_opcion_letra("abcd", "Elija su respuesta: ", "Error de comprensión, elija su respuesta: ")
+    final_cronometro = time.time()
+    tiempo_total = calcular_tiempo(inicio_cronometro, final_cronometro)
+    if respuesta_ingresada == pregunta["respuesta"]:
+        bandera_correcto = True
+    else:
+        bandera_correcto = False
+    return bandera_correcto, tiempo_total
+
+def printear_pantalla_consola_estadisticas_partida(usuario1:str, rondas_jugadas_partida1:int, aciertos_partida1:int, errores_partida1:int, usuario2:str = "", rondas_jugadas_partida2:int = 0, aciertos_partida2:int = 0, errores_partida2:int = 0, usuario_ganador:str = "",  modo_versus = False):
+    os.system("cls")
+    if modo_versus:
+        print(f"""Partida VERSUS terminada
+
+        Ganador: {usuario_ganador} 🎉 🥳
+
+        ———————————————————————————————————————————————————————            
+        Jugador: {usuario1}
+
+        Estadísticas partida:
+        - Rondas jugadas: {rondas_jugadas_partida1}
+        - Aciertos: {aciertos_partida1}
+        - Errores: {errores_partida1}
+        ———————————————————————————————————————————————————————
+        Jugador: {usuario2}
+
+        Estadísticas partida:
+        - Rondas jugadas: {rondas_jugadas_partida2}
+        - Aciertos: {aciertos_partida2}
+        - Errores: {errores_partida2}
+        ———————————————————————————————————————————————————————\n""") 
+    else:
+        print(f"""Partida ARCADE terminada
+            
+        Jugador: {usuario1}
+
+        Estadísticas partida:
+        - Rondas jugadas: {rondas_jugadas_partida1}
+        - Aciertos: {aciertos_partida1}
+        - Errores: {errores_partida1}\n""")
+    input("Presiona ENTER para continuar... ")
+
+def filtrar_por_categoria(categoria_deseada):
+    preguntas_diccionario = parser_csv()
+    diccionario_preguntas_final = {}
+
+    for dificultad in preguntas_diccionario:
+        preguntas = preguntas_diccionario[dificultad]
+        filtradas = []
+
+        for pregunta in preguntas:
+            if pregunta['categoria'] == categoria_deseada:
+                filtradas.append(pregunta)
+
+        if len(filtradas) > 0:
+            diccionario_preguntas_final[dificultad] = filtradas
+
+    return diccionario_preguntas_final
+

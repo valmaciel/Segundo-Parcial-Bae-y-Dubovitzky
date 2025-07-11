@@ -1,0 +1,12 @@
+{
+    "denis": {
+        "password": "123",
+        "monedas": 0,
+        "items_comprados": []
+    },
+    "valen": {
+        "password": "456",
+        "monedas": 0,
+        "items_comprados": []
+    }
+}
