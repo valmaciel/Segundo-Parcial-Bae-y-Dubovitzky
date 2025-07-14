@@ -38,39 +38,61 @@ def hacer_pregunta(preguntas_validas:list, vidas:int, dificultad:str, usuario:st
         print(f"{chr(97 + i)}) {opciones[i]}")
     return pregunta_actual
 
-def obtener_lista_preguntas_por_dificultad(dificultad:str, categoria_corona:str = ""):
-    archivo_preguntas = parser_csv()
-    match dificultad:
-        case "Fácil":
-            dificultades_permitidas = ["1", "2"]
-        case "Normal":
-            dificultades_permitidas = ["1", "2", "3"]
-        case "Difícil":
-            dificultades_permitidas = ["2", "3", "4"]
-        case "Versus":
-            dificultades_permitidas = ["1", "2", "3", "4"]
-            archivo_preguntas_filtrado = filtrar_por_categoria(categoria_corona)
-    preguntas_validas = []
-    if categoria_corona != "":
-        for dificultad in archivo_preguntas_filtrado:
-            preguntas_validas.extend(archivo_preguntas_filtrado[dificultad])
-    else:
-        for dificultad in dificultades_permitidas:
-            preguntas_validas.extend(archivo_preguntas[dificultad])
+def obtener_lista_preguntas_por_dificultad(dificultad:str, categoria:str = ""):
+    preguntas_diccionario = parser_csv()
     
-    return preguntas_validas
-
+    # Para modo Versus
+    if dificultad == "Versus":
+        # Si es una ronda corona, filtramos por categoría
+        if categoria:
+            preguntas_filtradas = []
+            for dificultad_nivel in preguntas_diccionario:
+                for pregunta in preguntas_diccionario[dificultad_nivel]:
+                    if pregunta['categoria'].lower() == categoria.lower():
+                        preguntas_filtradas.append(pregunta)
+            random.shuffle(preguntas_filtradas)
+            return preguntas_filtradas
+        # Si no es ronda corona, devolvemos todas las preguntas mezcladas
+        else:
+            todas_las_preguntas = []
+            for dificultad_nivel in preguntas_diccionario:
+                for pregunta in preguntas_diccionario[dificultad_nivel]:
+                    todas_las_preguntas.append(pregunta)
+            random.shuffle(todas_las_preguntas)
+            return todas_las_preguntas
+    
+    # Para modo Arcade
+    else:
+        # Determinar dificultades permitidas según nivel seleccionado
+        match dificultad:
+            case "Fácil":
+                dificultades_permitidas = ["1", "2"]
+            case "Normal":
+                dificultades_permitidas = ["1", "2", "3"]
+            case "Difícil":
+                dificultades_permitidas = ["2", "3", "4"]
+        
+        # Recolectar preguntas según dificultad permitida
+        preguntas_validas = []
+        for dificultad_nivel in dificultades_permitidas:
+            if dificultad_nivel in preguntas_diccionario:
+                preguntas_validas.extend(preguntas_diccionario[dificultad_nivel])
+        
+        # Mezclar las preguntas antes de devolverlas
+        random.shuffle(preguntas_validas)
+        return preguntas_validas
+        
 def obtener_y_validar_respuesta_pregunta(pregunta:dict):
     inicio_cronometro = time.time()
     respuesta_ingresada = obtener_opcion_letra("abcd", "Elija su respuesta: ", "Error de comprensión, elija su respuesta: ")
     final_cronometro = time.time()
     tiempo_total = calcular_tiempo(inicio_cronometro, final_cronometro)
-    if respuesta_ingresada == pregunta["respuesta"]:
+
+    if respuesta_ingresada.lower() == pregunta["respuesta"].lower():
         bandera_correcto = True
     else:
         bandera_correcto = False
     return bandera_correcto, tiempo_total
-
 def printear_pantalla_consola_estadisticas_partida(usuario1:str, rondas_jugadas_partida1:int, aciertos_partida1:int, errores_partida1:int, usuario2:str = "", rondas_jugadas_partida2:int = 0, aciertos_partida2:int = 0, errores_partida2:int = 0, usuario_ganador:str = "",  modo_versus = False):
     os.system("cls")
     if modo_versus:
@@ -131,4 +153,4 @@ def verificar_accesibilidad(opcion_accesibilidad:str):
 def agregar_monedas(usuario:str, cantidad:int):
     archivo_usuarios = leer_archivo_json()
     archivo_usuarios[usuario]["monedas"] += cantidad
-    escribir_archivo_json()
+    

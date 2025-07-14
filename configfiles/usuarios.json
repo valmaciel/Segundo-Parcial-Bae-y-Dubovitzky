@@ -8,5 +8,10 @@
         "password": "456",
         "monedas": 0,
         "items_comprados": []
+    },
+    "alguien": {
+        "password": "789",
+        "monedas": 0,
+        "items_comprados": []
     }
 }

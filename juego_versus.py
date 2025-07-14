@@ -22,11 +22,11 @@ def jugar_versus(usuario1:str, password1:str):
         if turno_usuario1:
             (rondas_jugadas_usuario1, aciertos_usuario1, errores_usuario1, turno_usuario1, puntos_corona_usuario1
             ) = jugar_ronda_versus(usuario1, puntos_corona_usuario1, categorias_restantes_usuario1,
-                                   rondas_jugadas_usuario1, aciertos_usuario1, errores_usuario1, turno_usuario1)
+                                    rondas_jugadas_usuario1, aciertos_usuario1, errores_usuario1, turno_usuario1)
         elif not turno_usuario1:
             (rondas_jugadas_usuario2, aciertos_usuario2, errores_usuario2, turno_usuario1, puntos_corona_usuario2
             ) = jugar_ronda_versus(usuario2, puntos_corona_usuario2, categorias_restantes_usuario2,
-                                   rondas_jugadas_usuario2, aciertos_usuario2, errores_usuario2, turno_usuario1)
+                                    rondas_jugadas_usuario2, aciertos_usuario2, errores_usuario2, turno_usuario1)
     
     if not categorias_restantes_usuario1:
         printear_pantalla_consola_estadisticas_partida(usuario1, rondas_jugadas_usuario1, aciertos_usuario1, errores_usuario1, usuario2, rondas_jugadas_usuario2, aciertos_usuario2, errores_usuario2, usuario1, True)

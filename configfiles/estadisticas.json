@@ -1,18 +1,26 @@
 {
     "denis": {
-        "partidas_ganadas": 0,
-        "aciertos_totales": 74,
-        "errores_totales": 52,
-        "tiempo_total": 92.12757873535156,
-        "rondas_jugadas": 124,
+        "partidas_ganadas": 1769,
+        "aciertos_totales": 482,
+        "errores_totales": 133,
+        "tiempo_total": 771.2613296508789,
+        "rondas_jugadas": 611,
         "puntos_totales": 0
     },
     "valen": {
+        "partidas_ganadas": 726,
+        "aciertos_totales": 248,
+        "errores_totales": 76,
+        "tiempo_total": 280.82205080986023,
+        "rondas_jugadas": 324,
+        "puntos_totales": 0
+    },
+    "alguien": {
         "partidas_ganadas": 0,
-        "aciertos_totales": 92,
-        "errores_totales": 29,
-        "tiempo_total": 92.35556650161743,
-        "rondas_jugadas": 121,
+        "aciertos_totales": 7,
+        "errores_totales": 6,
+        "tiempo_total": 5.206716537475586,
+        "rondas_jugadas": 13,
         "puntos_totales": 0
     }
 }

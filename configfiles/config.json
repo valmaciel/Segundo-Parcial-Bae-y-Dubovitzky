@@ -1,12 +1,12 @@
 {
     "volumen": {
-        "general": 0,
-        "musica": 35,
+        "general": 50,
+        "musica": 0,
         "efectos": 0
     },
     "accesibilidad": {
-        "tea": false,
-        "daltonismo": "tritanopia",
-        "tdah": true
+        "tea": true,
+        "daltonismo": "ninguno",
+        "tdah": false
     }
 }

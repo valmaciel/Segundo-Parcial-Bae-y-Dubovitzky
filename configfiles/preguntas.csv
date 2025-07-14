@@ -12,7 +12,7 @@ id,categoria,pregunta,opcion_a,opcion_b,opcion_c,opcion_d,respuesta_correcta,dif
 11,clasica,¿Quién fue el último emperador romano de Occidente?,Rómulo Augusto,Julio César,Constantino,Trajano,a,3,15
 12,clasica,¿Qué civilización creó el Partenón?,Griegos,Romanos,Etruscos,Fenicios,a,2,12
 13,clasica,¿Cuál fue la capital del Imperio Persa aqueménida?,Persépolis,Babilonia,Jerusalén,Susa,a,3,15
-14,clasica,¿Qué sistema filosófico fundó Sócrates?,Estoicismo,Platonismo,Socraticismo,No tuvo un sistema, c,4, 18
+14,clasica,¿Qué sistema filosófico fundó Sócrates?,Estoicismo,Platonismo,Socraticismo,No tuvo un sistema,c,4,18
 15,clasica,¿En qué batalla se enfrentaron Alejandro Magno y Darío III?,Maratón,Issos,Gaugamela,Cannae,c,3,15
 16,medieval,¿Cuál fue la principal religión en Europa durante la Edad Media?,Cristianismo,Islam,Hinduismo,Budismo,a,2,12
 17,medieval,¿Qué estructura defensiva fue característica de la Edad Media?,Castillos,Acueductos,Templos,Pirámides,a,2,12
