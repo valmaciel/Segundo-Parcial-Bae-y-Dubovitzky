@@ -251,7 +251,9 @@ def mostrar_resultado_versus(ventana, estado, eventos):
     categorias_coronadas2 = len(estado['versus_estado']['categorias_coronadas2'])
     
     ganador = estado['usuario'] if categorias_coronadas1 > categorias_coronadas2 else estado['versus_estado']['usuario2']
-    agregar_estadistica(ganador, 'partidas_ganadas')
+    if not estado['versus_estado'].get('partida_sumada'):
+        agregar_estadistica(ganador, 'partidas_ganadas')
+        estado['versus_estado']['partida_sumada'] = True
     
     # Crear una superficie para el contenido scrolleable
     superficie_stats = pygame.Surface((800, 1000))

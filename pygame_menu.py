@@ -257,7 +257,7 @@ def mostrar_login(ventana, estado, eventos):
     
     dibujar_texto(ventana, "Iniciar Sesión", 640, 100, estado['paleta'])
     
-    if 'campos_login' not in estado:
+    if 'campos_login' not in estado or estado['campos_login'] is None:
         estado['campos_login'] = {
             'usuario': crear_input_texto(440, 200, 400, 50),
             'password': crear_input_texto(440, 300, 400, 50)
@@ -268,16 +268,18 @@ def mostrar_login(ventana, estado, eventos):
     dibujar_texto(ventana, "Usuario:", 440, 180, estado['paleta'], centrado=False)
     dibujar_texto(ventana, "Contraseña:", 440, 280, estado['paleta'], centrado=False)
     
-    for campo in estado['campos_login'].values():
-        pygame.draw.rect(ventana, estado['paleta']['texto'], campo['rect'], 2)
-        if campo['activo']:
-            pygame.draw.rect(ventana, estado['paleta']['resaltado'], campo['rect'], 4)
-        
-        texto_surface = pygame.font.Font(None, 36).render(
-            '*' * len(campo['texto']) if campo == estado['campos_login']['password'] 
-            else campo['texto'], True, estado['paleta']['texto']
-        )
-        ventana.blit(texto_surface, (campo['rect'].x + 5, campo['rect'].y + 5))
+    # Solo iterar si 'campos_login' no es None
+    if estado['campos_login'] is not None:
+        for campo in estado['campos_login'].values():
+            pygame.draw.rect(ventana, estado['paleta']['texto'], campo['rect'], 2)
+            if campo['activo']:
+                pygame.draw.rect(ventana, estado['paleta']['resaltado'], campo['rect'], 4)
+            
+            texto_surface = pygame.font.Font(None, 36).render(
+                '*' * len(campo['texto']) if campo == estado['campos_login']['password'] 
+                else campo['texto'], True, estado['paleta']['texto']
+            )
+            ventana.blit(texto_surface, (campo['rect'].x + 5, campo['rect'].y + 5))
     
     boton_ingresar = crear_boton(440, 400, 400, 50, "Ingresar", estado['paleta'])
     boton_volver = crear_boton(440, 470, 400, 50, "Volver", estado['paleta'])
@@ -291,35 +293,36 @@ def mostrar_login(ventana, estado, eventos):
     for evento in eventos:
         if evento.type == pygame.MOUSEBUTTONDOWN:
             # Manejo de campos de texto
-            for campo in estado['campos_login'].values():
-                campo['activo'] = campo['rect'].collidepoint(evento.pos)
+            if estado['campos_login'] is not None:
+                for campo in estado['campos_login'].values():
+                    campo['activo'] = campo['rect'].collidepoint(evento.pos)
             
             # Manejo de botones
             if actualizar_boton(boton_ingresar, evento.pos):
-                usuario = estado['campos_login']['usuario']['texto']
-                password = estado['campos_login']['password']['texto']
-                
-                if iniciar_sesion(usuario, password):
-                    estado['usuario'] = usuario
-                    estado['password'] = password
-                    estado['pantalla_actual'] = 'menu_principal'
-                    if 'campos_login' in estado:
+                if estado['campos_login'] is not None:
+                    usuario = estado['campos_login']['usuario']['texto']
+                    password = estado['campos_login']['password']['texto']
+                    
+                    if iniciar_sesion(usuario, password):
+                        estado['usuario'] = usuario
+                        estado['password'] = password
+                        estado['pantalla_actual'] = 'menu_principal'
                         estado['campos_login'] = None
             
             elif actualizar_boton(boton_volver, evento.pos):
                 estado['pantalla_actual'] = 'pre_menu'
-                if 'campos_login' in estado:
-                    estado['campos_login'] = None
+                estado['campos_login'] = None
         
         elif evento.type == pygame.KEYDOWN:
-            for campo in estado['campos_login'].values():
-                if campo['activo']:
-                    if evento.key == pygame.K_RETURN:
-                        campo['activo'] = False
-                    elif evento.key == pygame.K_BACKSPACE:
-                        campo['texto'] = campo['texto'][:-1]
-                    elif evento.unicode.isprintable():
-                        campo['texto'] += evento.unicode
+            if estado['campos_login'] is not None:
+                for campo in estado['campos_login'].values():
+                    if campo['activo']:
+                        if evento.key == pygame.K_RETURN:
+                            campo['activo'] = False
+                        elif evento.key == pygame.K_BACKSPACE:
+                            campo['texto'] = campo['texto'][:-1]
+                        elif evento.unicode.isprintable():
+                            campo['texto'] += evento.unicode
 
 def mostrar_registro(ventana, estado, eventos):
     ventana.fill(estado['paleta']['fondo'])

@@ -1,14 +1,14 @@
 {
     "denis": {
-        "partidas_ganadas": 1769,
-        "aciertos_totales": 482,
+        "partidas_ganadas": 1,
+        "aciertos_totales": 514,
         "errores_totales": 133,
-        "tiempo_total": 771.2613296508789,
-        "rondas_jugadas": 611,
+        "tiempo_total": 827.5862426757812,
+        "rondas_jugadas": 643,
         "puntos_totales": 0
     },
     "valen": {
-        "partidas_ganadas": 726,
+        "partidas_ganadas": 0,
         "aciertos_totales": 248,
         "errores_totales": 76,
         "tiempo_total": 280.82205080986023,
