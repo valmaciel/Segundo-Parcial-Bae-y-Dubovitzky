@@ -92,7 +92,7 @@ def mostrar_menu_versus(ventana, estado, eventos):
     # Si no hay segundo jugador, mostrar pantalla de login
     if not estado.get('versus_estado') or not estado['versus_estado'].get('usuario2'):
         # Inicializar campos_login si no existen o si están en None
-        if not isinstance(estado.get('campos_login'), dict):
+        if not estado.get('campos_login'):
             estado['campos_login'] = {
                 'usuario': crear_input_texto(440, 200, 400, 50),
                 'password': crear_input_texto(440, 300, 400, 50)
