@@ -46,7 +46,8 @@ def dibujar_texto(ventana, texto, x, y, paleta, tamano=36, centrado=True):
 
 def crear_botones_menu(opciones, y_inicial=200, espaciado=80):
     botones = []
-    for indice, texto in enumerate(opciones):
+    indice = 0
+    for texto in opciones:
         boton = {
             'rect': pygame.Rect(440, y_inicial + indice * espaciado, 400, 60),
             'texto': texto,
@@ -54,6 +55,7 @@ def crear_botones_menu(opciones, y_inicial=200, espaciado=80):
             'fuente': pygame.font.Font(None, 36)
         }
         botones.append(boton)
+        indice += 1
     return botones
 
 def crear_input_texto(x, y, ancho, alto):
