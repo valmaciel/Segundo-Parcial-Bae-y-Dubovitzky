@@ -10,7 +10,7 @@ from usuarios import *
 def mostrar_pre_menu(ventana, estado, eventos):
     ventana.fill(estado['paleta']['fondo'])
     
-    dibujar_texto(ventana, "¡Bienvenido a PyQUIZ!", 640, 100, estado['paleta'])
+    dibujar_texto(ventana, "¡Bienvenido a PyCRONOS Quiz!", 640, 100, estado['paleta'])
     
     botones = crear_botones_menu([
         "Iniciar sesión",

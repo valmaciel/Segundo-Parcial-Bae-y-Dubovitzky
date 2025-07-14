@@ -15,7 +15,9 @@ def inicializar_pygame():
     ANCHO = 1280
     ALTO = 720
     ventana = pygame.display.set_mode((ANCHO, ALTO))
-    pygame.display.set_caption("PyQUIZ")
+    icono = pygame.image.load("imagenes/icono.png")
+    pygame.display.set_icon(icono)
+    pygame.display.set_caption("PyCRONOS Quiz")
     clock = pygame.time.Clock()
     return ventana, clock
 
