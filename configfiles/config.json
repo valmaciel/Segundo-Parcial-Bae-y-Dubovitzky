@@ -6,7 +6,7 @@
     },
     "accesibilidad": {
         "tea": false,
-        "daltonismo": "ninguno",
+        "daltonismo": "tritanopia",
         "tdah": true
     }
 }

@@ -1,7 +1,6 @@
 from parser import *
 from juego_utils import *
 from usuarios import iniciar_sesion_consola_restringido
-import time
 from input_utils import obtener_cadena_de_numeros
 
 def jugar_versus(usuario1:str, password1:str):

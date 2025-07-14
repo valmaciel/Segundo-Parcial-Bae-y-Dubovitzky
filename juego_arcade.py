@@ -4,7 +4,6 @@ from mensajes import inicializar_mensajes_menu_arcade
 from input import *
 import os
 import time
-import random
 
 def menu_arcade(usuario:str, password:str):
     from menu import mostrar_menu_principal
